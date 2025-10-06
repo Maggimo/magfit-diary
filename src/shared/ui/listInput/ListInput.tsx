@@ -1,7 +1,7 @@
 import { Autocomplete, TextField } from "@mui/material";
-import type { ExerciseOption } from "../../../entities/exercise/ui/ExerciseCard.tsx";
+import type { ExerciseOption } from "../../../features/exercise/ui/ExerciseCard.tsx";
 
-interface AutocompleteInputProps<T> {
+interface ListInputProps<T> {
   isEditable: boolean;
   currentOption: T;
   options: T[];
@@ -12,7 +12,7 @@ interface AutocompleteInputProps<T> {
   onChange?: (exerciseParams: ExerciseOption | null) => void;
 }
 
-export function AutocompleteInput<T>({
+export function ListInput<T>({
   isEditable,
   currentOption,
   options,
@@ -21,7 +21,7 @@ export function AutocompleteInput<T>({
   groupBy,
   onChange,
   isOptionEqualToValue,
-}: AutocompleteInputProps<T>) {
+}: ListInputProps<T>) {
   return (
     <div>
       <Autocomplete<T>

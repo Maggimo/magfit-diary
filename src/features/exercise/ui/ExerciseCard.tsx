@@ -2,12 +2,12 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { createFilterOptions } from "@mui/material";
 import { useMemo, useState } from "react";
-import { AutocompleteInput } from "../../../shared/ui/autocompleteInput/autocompleteInput.tsx";
+import { ListInput } from "../../../shared/ui";
 import { allExercises } from "../../../shared/utilities";
-import { useCalendarStore } from "../../calendarDay/slice/exerciseStore.ts";
+import { useCalendarStore } from "../../../entities/calendarDay/slice/exerciseStore.ts";
 import { ExerciseBody } from "./ExerciseBody.tsx";
 import style from "./ExerciseCard.module.css";
-import type { Exercise } from "../model/types.ts";
+import type { Exercise } from "../../../entities/exercise/model/types.ts";
 
 export type ExerciseOption = { group: string; name: string };
 
@@ -23,21 +23,20 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
     setExerciseName(exerciseParams, exercise);
   };
 
-  const { options, byGroupThenName } = useMemo(() => {
+  const byGroupThenName = (a: ExerciseOption, b: ExerciseOption) => {
     const collator = new Intl.Collator("ru", { sensitivity: "base" });
+    const g = collator.compare(a.group, b.group);
+    return g !== 0 ? g : collator.compare(a.name, b.name);
+  };
 
-    const byGroupThenName = (a: ExerciseOption, b: ExerciseOption) => {
-      const g = collator.compare(a.group, b.group);
-      return g !== 0 ? g : collator.compare(a.name, b.name);
-    };
-
+  const options = useMemo(() => {
     const options: ExerciseOption[] = Object.entries(allExercises)
       .flatMap(([group, names]) =>
         names.map((name) => ({ group: group.trim(), name: name.trim() })),
       )
       .sort(byGroupThenName);
 
-    return { options, byGroupThenName };
+    return options;
   }, []);
 
   const baseFilter = createFilterOptions<ExerciseOption>({
@@ -52,7 +51,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
     if (!exercise?.name) return { group: "Other", name: "Упражнение" };
     return (
       options.find((o) => o.name === exercise.name) ?? {
-        group: "Other",
+        group: "Другое",
         name: "Упражнение",
       }
     );
@@ -71,7 +70,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
           </div>
 
           <div className={style.exerciseName}>
-            <AutocompleteInput<ExerciseOption>
+            <ListInput<ExerciseOption>
               isEditable={isEditable}
               currentOption={currentOption}
               options={options}
@@ -88,7 +87,11 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
 
         <div
           onClick={() => setIsEditable((p) => !p)}
-          style={{ cursor: "pointer" }}
+          style={{
+            cursor: "pointer",
+            padding: "2em",
+            margin: "-2em",
+          }}
         >
           {isEditable ? <ExpandLess /> : <ExpandMore />}
         </div>

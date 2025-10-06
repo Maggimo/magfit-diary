@@ -1,6 +1,6 @@
-import Button from "@mui/material/Button";
-import { ExerciseCard } from "../../entities";
+import { ExerciseCard } from "../../features/exercise";
 import { useCalendarStore } from "../../entities/calendarDay/slice/exerciseStore.ts";
+import { CustomButton } from "../../shared/ui";
 import style from "./ExerciseList.module.css";
 
 export const ExerciseList = () => {
@@ -25,20 +25,11 @@ export const ExerciseList = () => {
           <ExerciseCard key={ex.id} exercise={ex} />
         ))}
       </div>
-      <Button
-        onClick={() => btnHandler()}
-        sx={{
-          color: "black",
-          borderColor: "black",
-          fontFamily: "'Roboto Condensed', sans-serif",
-          position: "absolute",
-          bottom: "20px",
-        }}
-        variant="outlined"
-        size="large"
-      >
-        Добавить упражнение
-      </Button>
+      <div className={style.addButton}>
+        <CustomButton buttonHandler={btnHandler}>
+          Добавить упражнение
+        </CustomButton>
+      </div>
     </div>
   );
 };

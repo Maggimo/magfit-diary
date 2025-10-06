@@ -1,10 +1,6 @@
 import { create } from "zustand";
-import type {
-  Exercise,
-  ExerciseCategory,
-  ExerciseSet,
-} from "../../exercise/model/types.ts";
-import type { ExerciseOption } from "../../exercise/ui/ExerciseCard.tsx";
+import type { Exercise, ExerciseSet } from "../../exercise/model/types.ts";
+import type { ExerciseOption } from "../../../features/exercise/ui/ExerciseCard.tsx";
 import type { CalendarDay } from "../model/types.ts";
 
 interface CalendarStore {
@@ -22,6 +18,7 @@ interface CalendarStore {
     id: string,
     exercise: Exercise,
   ) => void;
+  addSetToExercise: (exercise: Exercise) => void;
 }
 
 export const useCalendarStore = create<CalendarStore>()((set) => ({
@@ -40,9 +37,15 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
             exercises: [
               ...oldEx,
               {
-                sets: [{ weight: 0, reps: 0, id: crypto.randomUUID() }],
+                sets: [
+                  {
+                    weight: 0,
+                    reps: 0,
+                    id: crypto.randomUUID(),
+                  },
+                ],
                 id: crypto.randomUUID(),
-                category: "Other",
+                category: "Другое",
                 name: "Упражнение",
               },
             ],
@@ -59,7 +62,7 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
         return {
           ...ex,
           name: exerciseParams!.name,
-          category: exerciseParams!.group as ExerciseCategory,
+          category: exerciseParams!.group as string,
         };
       });
 
@@ -88,6 +91,27 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
         };
       });
 
+      return {
+        days: {
+          ...state.days,
+          [exactDate]: {
+            ...state.days[exactDate],
+            exercises: newExercises,
+          },
+        },
+      };
+    }),
+  addSetToExercise: (exercise: Exercise) =>
+    set((state) => {
+      const exactDate = state.selectedDate.toLocaleDateString();
+      const oldEx = state.days[exactDate]?.exercises ?? [];
+      const newExercises = oldEx.map((ex) => {
+        if (ex.id !== exercise.id) return ex;
+        return {
+          ...ex,
+          sets: [...ex.sets, { id: crypto.randomUUID(), weight: 0, reps: 0 }],
+        };
+      });
       return {
         days: {
           ...state.days,

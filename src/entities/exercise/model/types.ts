@@ -5,18 +5,18 @@ export interface ExerciseSet {
 }
 
 export type ExerciseCategory =
-  | "Chest"
-  | "Back"
-  | "Legs"
-  | "Arms"
-  | "Abs"
-  | "Cardio"
-  | "Other"
-  | "Shoulder";
+  | "Грудь"
+  | "Спина"
+  | "Ноги"
+  | "Руки"
+  | "Пресс"
+  | "Кардио"
+  | "Другое"
+  | "Плечи";
 
 export interface Exercise {
   id: string;
   name: string;
-  category: ExerciseCategory;
+  category: string;
   sets: ExerciseSet[];
 }

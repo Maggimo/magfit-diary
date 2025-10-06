@@ -1,5 +1,7 @@
 .calendar {
 		margin-bottom: 2em;
+		border-radius: 10px;
+		box-shadow: 0 8px 10px #dcdcdc;
 }
 
 .dayNumber {
@@ -20,8 +22,7 @@
 		width: 100vw;
 		padding-bottom: 1em;
 		padding-top: 1em;
-		border-radius: 10px;
-		box-shadow: 0 8px 10px #dcdcdc;
+
 }
 
 .day {
