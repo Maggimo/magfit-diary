@@ -59,7 +59,12 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
 
   return (
     <div className={style.card}>
-      <div className={style.cardHead}>
+      <div
+        onClick={() => {
+          setIsEditable((p) => !p);
+        }}
+        className={style.cardHead}
+      >
         <div className={style.info}>
           <div className={style.icon}>
             <img
@@ -69,7 +74,14 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
             />
           </div>
 
-          <div className={style.exerciseName}>
+          <div
+            onClick={(e) => {
+              if (isEditable) {
+                e.stopPropagation();
+              }
+            }}
+            className={style.exerciseName}
+          >
             <ListInput<ExerciseOption>
               isEditable={isEditable}
               currentOption={currentOption}
@@ -86,9 +98,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
         </div>
 
         <div
-          onClick={() => setIsEditable((p) => !p)}
           style={{
-            cursor: "pointer",
             padding: "2em",
             margin: "-2em",
           }}

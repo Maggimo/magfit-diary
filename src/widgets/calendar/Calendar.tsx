@@ -1,5 +1,6 @@
 import { useCalendarStore } from "../../entities/calendarDay/slice/exerciseStore.ts";
 import { daysOfWeek, months } from "../../shared/utilities";
+import CircleIcon from "@mui/icons-material/Circle";
 import styles from "./Calendar.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -54,6 +55,14 @@ const slides = generateArray();
 export const Calendar = () => {
   const selectedDate = useCalendarStore((state) => state.selectedDate);
   const setSelectedDate = useCalendarStore((state) => state.setSelectedDate);
+  const days = useCalendarStore((state) => state.days);
+
+  const isExercises = (exactDate: Date) => {
+    const day = exactDate.toLocaleDateString();
+    const exercises = days[day]?.exercises;
+    if (!exercises) return false;
+    return exercises?.length !== 0;
+  };
 
   return (
     <div className={styles.calendar}>
@@ -65,6 +74,7 @@ export const Calendar = () => {
             </div>
             <div className={styles.days}>
               {slide.days.map((value) => {
+                const isExercisesFlag = isExercises(value);
                 const key = value.toISOString().slice(0, 10);
                 const todayFlag = isSameDay(value, current);
                 const selectedFlag = isSameDay(value, selectedDate);
@@ -92,6 +102,11 @@ export const Calendar = () => {
                     >
                       {value.getDate()}
                     </div>
+                    {isExercisesFlag && (
+                      <CircleIcon
+                        sx={{ fontSize: "10px", paddingTop: "5px" }}
+                      />
+                    )}
                   </div>
                 );
               })}

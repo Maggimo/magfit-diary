@@ -19,6 +19,8 @@ interface CalendarStore {
     exercise: Exercise,
   ) => void;
   addSetToExercise: (exercise: Exercise) => void;
+  deleteExercise: (exercise: Exercise) => void;
+  deleteSet: (exercise: Exercise, exerciseSet: ExerciseSet) => void;
 }
 
 export const useCalendarStore = create<CalendarStore>()((set) => ({
@@ -101,7 +103,7 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
         },
       };
     }),
-  addSetToExercise: (exercise: Exercise) =>
+  addSetToExercise: (exercise) =>
     set((state) => {
       const exactDate = state.selectedDate.toLocaleDateString();
       const oldEx = state.days[exactDate]?.exercises ?? [];
@@ -110,6 +112,42 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
         return {
           ...ex,
           sets: [...ex.sets, { id: crypto.randomUUID(), weight: 0, reps: 0 }],
+        };
+      });
+      return {
+        days: {
+          ...state.days,
+          [exactDate]: {
+            ...state.days[exactDate],
+            exercises: newExercises,
+          },
+        },
+      };
+    }),
+  deleteExercise: (exercise) =>
+    set((state) => {
+      const exactDate = state.selectedDate.toLocaleDateString();
+      const oldEx = state.days[exactDate]?.exercises ?? [];
+      const newExercises = oldEx.filter((ex) => ex.id !== exercise.id);
+      return {
+        days: {
+          ...state.days,
+          [exactDate]: {
+            ...state.days[exactDate],
+            exercises: newExercises,
+          },
+        },
+      };
+    }),
+  deleteSet: (exercise, exerciseSet) =>
+    set((state) => {
+      const exactDate = state.selectedDate.toLocaleDateString();
+      const oldEx = state.days[exactDate].exercises;
+      const newExercises = oldEx.map((ex) => {
+        if (ex.id !== exercise.id) return ex;
+        return {
+          ...ex,
+          sets: ex.sets.filter((set) => set.id !== exerciseSet.id),
         };
       });
       return {

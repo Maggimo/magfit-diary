@@ -1,9 +1,14 @@
-import { styled, TextField, type TextFieldProps } from "@mui/material";
+import {
+  IconButton,
+  styled,
+  TextField,
+  type TextFieldProps,
+} from "@mui/material";
+import type { ChangeEvent } from "react";
 import { useCalendarStore } from "../../../entities/calendarDay/slice/exerciseStore.ts";
-import type {
-  Exercise,
-  ExerciseSet,
-} from "../../../entities/exercise/model/types.ts";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
+import type { Exercise, ExerciseSet } from "../../../entities/exercise";
 import style from "./ExerciseCard.module.css";
 import { CustomButton } from "../../../shared/ui";
 
@@ -31,26 +36,34 @@ const ExerciseInput = styled((props: TextFieldProps) => (
 export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
   const onChangeHandler = useCalendarStore((store) => store.setExerciseValues);
   const addSetToExercise = useCalendarStore((store) => store.addSetToExercise);
+  const deleteExercise = useCalendarStore((store) => store.deleteExercise);
+  const deleteSet = useCalendarStore((store) => store.deleteSet);
+
+  const inputHandler = (
+    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    set: ExerciseSet,
+  ) => {
+    if (event.target.value.length <= 3) {
+      onChangeHandler(
+        event.target.value,
+        event.target.id as keyof ExerciseSet,
+        set.id,
+        exercise,
+      );
+    }
+  };
   return (
     <div className={style.sets}>
       {exercise.sets.map((set, idx) => {
         return (
           <div className={style.row} key={set.id}>
             <div className={style.setIndex}>{idx + 1}</div>
-
             <div className={style.cell}>
               <ExerciseInput
                 id={"reps"}
                 value={set.reps === 0 ? "" : set.reps}
                 onChange={(e) => {
-                  if (e.target.value.length <= 3) {
-                    onChangeHandler(
-                      e.target.value,
-                      e.target.id as keyof ExerciseSet,
-                      set.id,
-                      exercise,
-                    );
-                  }
+                  inputHandler(e, set);
                 }}
               />
             </div>
@@ -59,16 +72,14 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
                 id={"weight"}
                 value={set.weight === 0 ? "" : set.weight}
                 onChange={(e) => {
-                  if (e.target.value.length <= 3) {
-                    onChangeHandler(
-                      e.target.value,
-                      e.target.id as keyof ExerciseSet,
-                      set.id,
-                      exercise,
-                    );
-                  }
+                  inputHandler(e, set);
                 }}
               />
+            </div>
+            <div>
+              <IconButton onClick={() => deleteSet(exercise, set)}>
+                <CloseIcon />
+              </IconButton>
             </div>
           </div>
         );
@@ -77,6 +88,9 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
         <CustomButton buttonHandler={() => addSetToExercise(exercise)}>
           Добавить подход
         </CustomButton>
+        <IconButton onClick={() => deleteExercise(exercise)}>
+          <DeleteIcon />
+        </IconButton>
       </div>
     </div>
   );

@@ -1,15 +1,14 @@
 import { Autocomplete, TextField } from "@mui/material";
-import type { ExerciseOption } from "../../../features/exercise/ui/ExerciseCard.tsx";
 
 interface ListInputProps<T> {
   isEditable: boolean;
-  currentOption: T;
+  currentOption: NonNullable<T>;
   options: T[];
   filterOptions: (options: T[], state: any) => T[];
   getOptionLabel: (option: T) => string;
   groupBy: (option: T) => string;
   isOptionEqualToValue: (option: T, value: T) => boolean;
-  onChange?: (exerciseParams: ExerciseOption | null) => void;
+  onChange?: (exerciseParams: T | null) => void;
 }
 
 export function ListInput<T>({
@@ -24,14 +23,12 @@ export function ListInput<T>({
 }: ListInputProps<T>) {
   return (
     <div>
-      <Autocomplete<T>
-        // @ts-ignore
-        freeSolo
+      <Autocomplete<T, false, true, false>
         disabled={!isEditable}
         value={currentOption}
         onChange={(_, newValue) => {
           if (onChange) {
-            onChange(newValue as ExerciseOption);
+            onChange(newValue as T);
           }
         }}
         options={options}
@@ -40,6 +37,7 @@ export function ListInput<T>({
         getOptionLabel={getOptionLabel}
         isOptionEqualToValue={isOptionEqualToValue}
         popupIcon={null}
+        disableClearable={true}
         sx={{
           width: 200,
           "&.Mui-disabled": {
