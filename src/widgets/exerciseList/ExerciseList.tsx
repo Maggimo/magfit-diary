@@ -6,12 +6,16 @@ import style from "./ExerciseList.module.css";
 export const ExerciseList = () => {
   const days = useCalendarStore((state) => state.days);
   const addExercise = useCalendarStore((state) => state.addExercise);
+  // const loadDaysFromLocalStorage = useCalendarStore(
+  //   (state) => state.loadDaysFromLocalStorage,
+  // );
   const selectedDate = useCalendarStore((state) => state.selectedDate);
   const exerciseArray =
     days[selectedDate.toLocaleDateString()]?.exercises ?? [];
 
   const btnHandler = () => {
     addExercise();
+    // loadDaysFromLocalStorage(selectedDate);
   };
 
   return (

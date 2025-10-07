@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useCalendarStore } from "../../entities/calendarDay/slice/exerciseStore.ts";
 import { daysOfWeek, months } from "../../shared/utilities";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -35,17 +36,18 @@ const generateArray = () => {
     months.push(new Date(clearDate));
 
     clearDate.setDate(clearDate.getDate() + 1);
+
+    if (months.length === 7) {
+      slides.push({ days: months });
+      months = [];
+    }
+
     if (
       clearDate.getFullYear() === current.getFullYear() &&
       clearDate.getMonth() === current.getMonth() &&
       clearDate.getDate() === current.getDate()
     ) {
-      currentIndex = slides.length + 1;
-    }
-
-    if (months.length === 7) {
-      slides.push({ days: months });
-      months = [];
+      currentIndex = slides.length;
     }
   }
   return slides;
@@ -55,7 +57,14 @@ const slides = generateArray();
 export const Calendar = () => {
   const selectedDate = useCalendarStore((state) => state.selectedDate);
   const setSelectedDate = useCalendarStore((state) => state.setSelectedDate);
+  const loadDaysFromLocalStorage = useCalendarStore(
+    (state) => state.loadDaysFromLocalStorage,
+  );
   const days = useCalendarStore((state) => state.days);
+  const [observableDate, setObservableDate] = useState<Date>(selectedDate);
+  useEffect(() => {
+    loadDaysFromLocalStorage(observableDate);
+  }, [observableDate]);
 
   const isExercises = (exactDate: Date) => {
     const day = exactDate.toLocaleDateString();
@@ -66,7 +75,20 @@ export const Calendar = () => {
 
   return (
     <div className={styles.calendar}>
-      <Swiper initialSlide={currentIndex} spaceBetween={50} slidesPerView={1}>
+      <Swiper
+        initialSlide={currentIndex}
+        spaceBetween={50}
+        slidesPerView={1}
+        onSlideChangeTransitionEnd={(swiper) => {
+          if (
+            slides[swiper.activeIndex].days.at(-1)?.getMonth() ===
+            observableDate.getMonth()
+          ) {
+            return;
+          }
+          setObservableDate(new Date(slides[swiper.activeIndex].days.at(-1)!));
+        }}
+      >
         {slides.map((slide) => (
           <SwiperSlide>
             <div className={styles.month}>

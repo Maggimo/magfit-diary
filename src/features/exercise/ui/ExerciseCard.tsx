@@ -83,8 +83,8 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
             className={style.exerciseName}
           >
             <ListInput<ExerciseOption>
-              isEditable={isEditable}
               currentOption={currentOption}
+              isEditable={isEditable}
               options={options}
               filterOptions={filterOptions}
               getOptionLabel={(o) => o.name}
