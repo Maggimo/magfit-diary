@@ -4,10 +4,10 @@ import { createFilterOptions } from "@mui/material";
 import { useMemo, useState } from "react";
 import { ListInput } from "../../../shared/ui";
 import { allExercises } from "../../../shared/utilities";
-import { useCalendarStore } from "../../../entities/calendarDay/slice/exerciseStore.ts";
+import { useCalendarStore } from "../../../entities/calendarDay";
 import { ExerciseBody } from "./ExerciseBody.tsx";
 import style from "./ExerciseCard.module.css";
-import type { Exercise } from "../../../entities/exercise/model/types.ts";
+import type { Exercise } from "../../../entities/exercise";
 
 export type ExerciseOption = { group: string; name: string };
 

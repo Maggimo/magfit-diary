@@ -1,0 +1,30 @@
+.dayNumber {
+		display: flex;
+		border-radius: 50%;
+		border: 1px solid;
+		align-items: center;
+		justify-content: center;
+		width: 2em;
+		height: 2em;
+}
+
+.today {
+		composes: dayNumber;
+		background-color: #000000;
+		color: #ffffff;
+}
+
+.day {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+}
+
+.dayName {
+		font-weight: bold;
+}
+
+.selectedDay {
+		composes: dayNumber;
+		background-color: rgba(62, 65, 255, 0.18);
+}

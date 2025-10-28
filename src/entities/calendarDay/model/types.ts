@@ -1,4 +1,4 @@
-import type { Exercise } from "../../exercise/model/types.ts";
+import type { Exercise } from "../../exercise";
 
 export interface CalendarDay {
   exercises: Exercise[];

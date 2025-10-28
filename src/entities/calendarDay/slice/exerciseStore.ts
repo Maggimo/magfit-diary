@@ -1,13 +1,19 @@
+import dayjs, { type Dayjs } from "dayjs";
+import "dayjs/locale/ru";
 import { create } from "zustand";
 import type { ExerciseOption } from "../../../features/exercise/ui/ExerciseCard.tsx";
 import type { Exercise, ExerciseSet } from "../../exercise";
 import type { CalendarDay } from "../model/types.ts";
 
+dayjs.locale("ru");
+
 interface CalendarStore {
   days: Record<string, CalendarDay>;
-  selectedDate: Date;
-  setSelectedDate: (date: Date) => void;
-  loadDaysFromLocalStorage: (date: Date) => void;
+  selectedDate: Dayjs;
+  setSelectedDate: (date: Dayjs) => void;
+  observableDate: dayjs.Dayjs;
+  setObservableDate: (date: Dayjs) => void;
+  loadDaysFromLocalStorage: (date: Dayjs) => void;
   addExercise: () => void;
   setExerciseName: (
     exerciseParams: ExerciseOption | null,
@@ -24,14 +30,14 @@ interface CalendarStore {
   deleteSet: (exercise: Exercise, exerciseSet: ExerciseSet) => void;
 }
 
-const getDaysFromLocalStorage = (date: Date) => {
-  const prevDate = new Date(date.getFullYear(), date.getMonth() - 1, 1);
-  const prevDateKey = `days-${prevDate.getMonth()}-${prevDate.getFullYear()}`;
+const getDaysFromLocalStorage = (date: Dayjs) => {
+  const prevDate = dayjs(date.add(-1, "month"));
+  const prevDateKey = prevDate.format("MM-YYYY");
   const prevDays = JSON.parse(localStorage.getItem(prevDateKey) ?? "{}");
-  const nextDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
-  const nextDateKey = `days-${nextDate.getMonth()}-${nextDate.getFullYear()}`;
+  const nextDate = dayjs(date.add(1, "month"));
+  const nextDateKey = nextDate.format("MM-YYYY");
   const nextDays = JSON.parse(localStorage.getItem(nextDateKey) ?? "{}");
-  const currentDateKey = `days-${date.getMonth()}-${date.getFullYear()}`;
+  const currentDateKey = date.format("MM-YYYY");
   const currentDays = JSON.parse(localStorage.getItem(currentDateKey) ?? "{}");
   return {
     ...prevDays,
@@ -56,18 +62,15 @@ const generateExercise = () => {
 };
 
 const saveDaysToLocalStorage = (
-  date: Date,
+  date: Dayjs,
   newDays: Record<string, CalendarDay>,
 ) => {
-  localStorage.setItem(
-    `days-${date.getMonth()}-${date.getFullYear()}`,
-    JSON.stringify(newDays),
-  );
+  localStorage.setItem(date.format("MM-YYYY"), JSON.stringify(newDays));
 };
 
 const getDateKeyAndOldExercises = (state: CalendarStore) => {
-  const dateKey = state.selectedDate.toLocaleDateString();
-  const oldExercises = state.days[dateKey].exercises ?? [];
+  const dateKey = state.selectedDate.format("DD-MM-YYYY");
+  const oldExercises = state.days[dateKey]?.exercises ?? [];
   return { dateKey, oldExercises };
 };
 
@@ -89,8 +92,11 @@ const replaceExercises = (
 
 export const useCalendarStore = create<CalendarStore>()((set) => ({
   days: {},
-  selectedDate: new Date(),
+  selectedDate: dayjs(),
   setSelectedDate: (date) => set({ selectedDate: date }),
+
+  observableDate: dayjs(),
+  setObservableDate: (date) => set({ observableDate: date }),
 
   loadDaysFromLocalStorage: (date) =>
     set(() => {
@@ -105,6 +111,7 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
       const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
       oldExercises.push(generateExercise());
       const newDays = replaceExercises(state, dateKey, oldExercises);
+
       return {
         days: newDays,
       };

@@ -1,0 +1,130 @@
+{
+  "hash": "1bfde6a2",
+  "configHash": "a8d58703",
+  "lockfileHash": "a5713647",
+  "browserHash": "c0b70e11",
+  "optimized": {
+    "@mui/icons-material/Circle": {
+      "src": "../../node_modules/@mui/icons-material/esm/Circle.js",
+      "file": "@mui_icons-material_Circle.js",
+      "fileHash": "82a9fbd4",
+      "needsInterop": false
+    },
+    "@mui/icons-material/Close": {
+      "src": "../../node_modules/@mui/icons-material/esm/Close.js",
+      "file": "@mui_icons-material_Close.js",
+      "fileHash": "5ffbab46",
+      "needsInterop": false
+    },
+    "@mui/icons-material/Delete": {
+      "src": "../../node_modules/@mui/icons-material/esm/Delete.js",
+      "file": "@mui_icons-material_Delete.js",
+      "fileHash": "5e9efe67",
+      "needsInterop": false
+    },
+    "@mui/icons-material/ExpandLess": {
+      "src": "../../node_modules/@mui/icons-material/esm/ExpandLess.js",
+      "file": "@mui_icons-material_ExpandLess.js",
+      "fileHash": "c4dd58d4",
+      "needsInterop": false
+    },
+    "@mui/icons-material/ExpandMore": {
+      "src": "../../node_modules/@mui/icons-material/esm/ExpandMore.js",
+      "file": "@mui_icons-material_ExpandMore.js",
+      "fileHash": "c231259a",
+      "needsInterop": false
+    },
+    "@mui/material": {
+      "src": "../../node_modules/@mui/material/esm/index.js",
+      "file": "@mui_material.js",
+      "fileHash": "016aaa26",
+      "needsInterop": false
+    },
+    "@mui/material/Button": {
+      "src": "../../node_modules/@mui/material/esm/Button/index.js",
+      "file": "@mui_material_Button.js",
+      "fileHash": "936650d2",
+      "needsInterop": false
+    },
+    "dayjs": {
+      "src": "../../node_modules/dayjs/dayjs.min.js",
+      "file": "dayjs.js",
+      "fileHash": "32ec15dd",
+      "needsInterop": true
+    },
+    "dayjs/locale/ru": {
+      "src": "../../node_modules/dayjs/locale/ru.js",
+      "file": "dayjs_locale_ru.js",
+      "fileHash": "5331ffce",
+      "needsInterop": true
+    },
+    "dayjs/plugin/isoWeek": {
+      "src": "../../node_modules/dayjs/plugin/isoWeek.js",
+      "file": "dayjs_plugin_isoWeek.js",
+      "fileHash": "560cc0a5",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "f7fe3b68",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "8b7d8d7a",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "4023a42b",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "f32d0757",
+      "needsInterop": true
+    },
+    "swiper/react": {
+      "src": "../../node_modules/swiper/swiper-react.mjs",
+      "file": "swiper_react.js",
+      "fileHash": "7b955f9b",
+      "needsInterop": false
+    },
+    "zustand": {
+      "src": "../../node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "02a5af43",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "Button-BD_KlM6_": {
+      "file": "Button-BD_KlM6_.js",
+      "isDynamicEntry": false
+    },
+    "chunk-DbKvDyjX": {
+      "file": "chunk-DbKvDyjX.js",
+      "isDynamicEntry": false
+    },
+    "createSvgIcon-CrKvjmir": {
+      "file": "createSvgIcon-CrKvjmir.js",
+      "isDynamicEntry": false
+    },
+    "dayjs.min-D5O0C5lT": {
+      "file": "dayjs.min-D5O0C5lT.js",
+      "isDynamicEntry": false
+    },
+    "react-CEWykDo6": {
+      "file": "react-CEWykDo6.js",
+      "isDynamicEntry": false
+    },
+    "react-dom-Eu_ZqOED": {
+      "file": "react-dom-Eu_ZqOED.js",
+      "isDynamicEntry": false
+    }
+  }
+}

@@ -1,22 +1,32 @@
+import { type Dispatch, type SetStateAction, useEffect } from "react";
 import { ExerciseCard } from "../../features/exercise";
-import { useCalendarStore } from "../../entities/calendarDay/slice/exerciseStore.ts";
+import { useCalendarStore } from "../../entities/calendarDay";
 import { CustomButton } from "../../shared/ui";
 import style from "./ExerciseList.module.css";
+import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
+import { Button } from "@mui/material";
 
-export const ExerciseList = () => {
+interface ExerciseListProps {
+  setDrawerVisibility: Dispatch<SetStateAction<boolean>>;
+}
+
+export const ExerciseList = ({ setDrawerVisibility }: ExerciseListProps) => {
   const days = useCalendarStore((state) => state.days);
   const addExercise = useCalendarStore((state) => state.addExercise);
-  // const loadDaysFromLocalStorage = useCalendarStore(
-  //   (state) => state.loadDaysFromLocalStorage,
-  // );
   const selectedDate = useCalendarStore((state) => state.selectedDate);
+  const loadDaysFromLocalStorage = useCalendarStore(
+    (state) => state.loadDaysFromLocalStorage,
+  );
+  const observableDate = useCalendarStore((state) => state.observableDate);
   const exerciseArray =
-    days[selectedDate.toLocaleDateString()]?.exercises ?? [];
+    days[selectedDate.format("DD-MM-YYYY")]?.exercises ?? [];
 
   const btnHandler = () => {
     addExercise();
-    // loadDaysFromLocalStorage(selectedDate);
   };
+  useEffect(() => {
+    loadDaysFromLocalStorage(observableDate);
+  }, [observableDate]);
 
   return (
     <div className={style.menu}>
@@ -29,10 +39,18 @@ export const ExerciseList = () => {
           <ExerciseCard key={ex.id} exercise={ex} />
         ))}
       </div>
-      <div className={style.addButton}>
-        <CustomButton buttonHandler={btnHandler}>
-          Добавить упражнение
-        </CustomButton>
+      <div className={style.footer}>
+        <Button
+          color="inherit"
+          onClick={() => setDrawerVisibility((prev) => !prev)}
+        >
+          <ViewHeadlineIcon />
+        </Button>
+        <div className={style.addButton}>
+          <CustomButton buttonHandler={btnHandler}>
+            Добавить упражнение
+          </CustomButton>
+        </div>
       </div>
     </div>
   );

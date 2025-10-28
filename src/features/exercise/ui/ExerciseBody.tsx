@@ -5,7 +5,7 @@ import {
   type TextFieldProps,
 } from "@mui/material";
 import type { ChangeEvent } from "react";
-import { useCalendarStore } from "../../../entities/calendarDay/slice/exerciseStore.ts";
+import { useCalendarStore } from "../../../entities/calendarDay";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import type { Exercise, ExerciseSet } from "../../../entities/exercise";

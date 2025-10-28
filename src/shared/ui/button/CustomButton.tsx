@@ -19,6 +19,7 @@ export const CustomButton = ({
       sx={[
         {
           color: "black",
+          padding: "5px 5px",
           borderColor: "black",
           fontFamily: "'Roboto Condensed', sans-serif",
         },
