@@ -4,7 +4,7 @@ import { refreshTokensRequest } from "./userApi.ts";
 
 export const $api = axios.create({
   // baseURL: "http://127.0.0.1:3000/api/",
-  baseURL: "35.160.120.126/api",
+  baseURL: "https://35.160.120.126/api",
   withCredentials: true,
 });
 
