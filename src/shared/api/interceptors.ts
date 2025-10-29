@@ -3,7 +3,8 @@ import { useUserStore } from "../../entities/user/slice/userStore.ts";
 import { refreshTokensRequest } from "./userApi.ts";
 
 export const $api = axios.create({
-  baseURL: "http://127.0.0.1:3000/api/",
+  // baseURL: "http://127.0.0.1:3000/api/",
+  baseURL: "https://magfit-diary.vercel.app/api/",
   withCredentials: true,
 });
 
