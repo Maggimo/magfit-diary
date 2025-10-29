@@ -24,6 +24,7 @@ export const ExerciseList = ({ setDrawerVisibility }: ExerciseListProps) => {
   const btnHandler = () => {
     addExercise();
   };
+
   useEffect(() => {
     loadDaysFromLocalStorage(observableDate);
   }, [observableDate]);
