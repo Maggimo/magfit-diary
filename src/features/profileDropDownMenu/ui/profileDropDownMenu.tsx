@@ -53,6 +53,7 @@ export const ProfileDropDownMenu = () => {
       .catch((reason) => console.log(reason))
       .finally(() => {
         useUserStore.getState().reset();
+        localStorage.clear();
         window.location.reload();
       });
   };
