@@ -1,5 +1,5 @@
 import type { AxiosResponse } from "axios";
-import { $api, $raw } from "./interceptors.ts";
+import { $api } from "./interceptors.ts";
 
 interface IUserResponse {
   name: string;
@@ -30,5 +30,5 @@ export const logoutRequest = async (
 export const refreshTokensRequest = async (): Promise<
   AxiosResponse<string>
 > => {
-  return $raw.get("/refresh");
+  return $api.get("/refresh");
 };

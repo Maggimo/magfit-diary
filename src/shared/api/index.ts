@@ -1,1 +1,1 @@
-export { $api, $raw } from "./interceptors.ts";
+export { $api } from "./interceptors.ts";

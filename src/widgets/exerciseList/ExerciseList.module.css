@@ -44,3 +44,9 @@
 		gap: 15px;
 		bottom: 0;
 }
+
+@media (max-width: 366px) {
+		.list {
+				max-height: calc(100vh - 290px);;
+		}
+}
