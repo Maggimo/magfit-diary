@@ -43,12 +43,11 @@ export const LoginForm = () => {
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) => {
     event.preventDefault();
-    await loginRequest(loginFormState.login, loginFormState.password).then(
-      (res) => {
+    await loginRequest(loginFormState.login, loginFormState.password)
+      .then((res) => {
         successLogin(res);
-      },
-    );
-    // .catch((reason) => setError(JSON.parse(reason.request.response)));
+      })
+      .catch((reason) => setError(JSON.parse(reason.request.response)));
   };
 
   return (
