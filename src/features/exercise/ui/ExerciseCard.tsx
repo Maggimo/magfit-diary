@@ -63,7 +63,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
         dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
         dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
         dragElastic={0.3}
-        className={"w-[calc(100vw+50px)] flex justify-start gap-10"}
+        className={"w-[calc(100dvw+50px)] flex justify-start gap-10"}
       >
         <div className={style.card}>
           <div

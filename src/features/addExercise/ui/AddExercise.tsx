@@ -97,7 +97,7 @@ export const AddExercise = () => {
             {/*пустой чтобы не было ошибки в консоли*/}
           </DrawerHeader>
           <div>
-            <Command className="w-full h-[calc(100vh-180px)]">
+            <Command className="w-full h-[calc(100dvh-180px)]">
               <CommandInput placeholder="Поиск..." />
               <CommandList className={"max-h-full overflow-y-scroll"}>
                 {allExercises.map((group) => (

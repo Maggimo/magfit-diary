@@ -1,6 +1,6 @@
 .wrapper {
-		width: 100vw;
-		height: 100vh;
+		width: 100dvw;
+		height: 100dvh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -46,11 +46,13 @@
 		font-weight: bold;
 		transition: all 0.3s ease;
 }
+
 .form button:hover {
 		background-color: white;
 		color: black;
 		transform: scale(1.05);
 }
+
 .form button {
 		-webkit-tap-highlight-color: transparent; /* 💡 отключает синий подсвет */
 }
