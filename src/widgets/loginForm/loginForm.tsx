@@ -52,7 +52,7 @@ export const LoginForm = () => {
 
   return (
     <div className={styles.wrapper}>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
         <div>
           <input
             value={loginFormState.login}
@@ -73,8 +73,13 @@ export const LoginForm = () => {
             {error && error.cause === "password" && error.message}
           </div>
         </div>
-        <button onClick={(event) => loginButtonHandler(event)}>Login</button>
-        <button onClick={(event) => registrationButtonHandler(event)}>
+        <button type="button" onClick={(event) => loginButtonHandler(event)}>
+          Login
+        </button>
+        <button
+          type="button"
+          onClick={(event) => registrationButtonHandler(event)}
+        >
           Register
         </button>
       </form>

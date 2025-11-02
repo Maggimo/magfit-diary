@@ -24,10 +24,17 @@
 }
 
 .pageName {
+		text-align: left;
 		font-size: 2em;
 }
 
 .month {
 		font-size: 1em;
 		color: #787878;
+}
+
+@media (max-width: 320px) {
+		.month {
+				font-size: 0.8em;
+		}
 }

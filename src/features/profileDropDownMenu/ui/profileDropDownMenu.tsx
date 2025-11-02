@@ -1,6 +1,8 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsIcon from "@mui/icons-material/Settings";
+import NoteAltOutlinedIcon from "@mui/icons-material/NoteAltOutlined";
+import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 import {
   Avatar,
   Button,
@@ -10,6 +12,7 @@ import {
   styled,
 } from "@mui/material";
 import { type MouseEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../../entities/user/slice/userStore.ts";
 import { logoutRequest } from "../../../shared/api/userApi.ts";
 
@@ -35,7 +38,7 @@ const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(({}) => ({
 
 export const ProfileDropDownMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
+  const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
 
   const open = Boolean(anchorEl);
@@ -80,19 +83,35 @@ export const ProfileDropDownMenu = () => {
           },
         }}
       >
-        <MenuItem disabled onClick={handleClose} disableRipple>
+        <MenuItem disabled onClick={handleClose}>
           <ManageAccountsIcon />
           Профиль
           <br />
           (В разработке)
         </MenuItem>
-        <MenuItem disabled onClick={handleClose} disableRipple>
+        <MenuItem disabled onClick={handleClose}>
           <SettingsIcon />
           Настройки
           <br />
           (В разработке)
         </MenuItem>
-        <MenuItem onClick={logout} disableRipple>
+        <MenuItem
+          onClick={() => {
+            navigate("/exercises/");
+          }}
+        >
+          <NoteAltOutlinedIcon />
+          Список упражнений
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            navigate("/timer");
+          }}
+        >
+          <TimerOutlinedIcon />
+          Таймер
+        </MenuItem>
+        <MenuItem onClick={logout}>
           <LogoutIcon />
           Выйти
         </MenuItem>

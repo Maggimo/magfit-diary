@@ -3,6 +3,8 @@ import dayjs, { Dayjs } from "dayjs";
 import { firstLetterToUpperCase } from "../../../shared/ui/stringFormat/functions.ts";
 import styles from "./Day.module.css";
 
+// import {} from "@/";
+
 interface DayProps {
   hasExercises: (date: Dayjs) => boolean;
   value: Dayjs;

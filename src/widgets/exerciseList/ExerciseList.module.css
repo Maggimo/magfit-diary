@@ -12,15 +12,14 @@
 		align-items: center;
 		gap: 15px;
 		width: 100%;
-		/*margin-bottom: 60px;*/
 		padding-bottom: 15px;
-		max-height: calc(100vh - 260px);
-		overflow-y: scroll;
-		overflow-x: hidden;
+		max-height: calc(100vh - 270px);
 }
 
 .listWithShadow {
 		composes: list;
+		overflow-y: scroll;
+		overflow-x: hidden;
 		border-radius: 10px;
 		box-shadow: 0 8px 10px #dcdcdc;
 }
@@ -32,21 +31,12 @@
 		width: 100%;
 		display: grid;
 		justify-items: center;
-		grid-template-columns: 20% 60% 20%;
-		grid-template-rows: 100%;
+		/*grid-template-columns: 20% 60% 20%;*/
+		/*grid-template-rows: 100%;*/
 }
 
-.addButton {
-		width: 90%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 15px;
-		bottom: 0;
-}
-
-@media (max-width: 366px) {
-		.list {
-				max-height: calc(100vh - 290px);;
-		}
-}
+/*@media (max-width: 366px) {*/
+/*		.list {*/
+/*				max-height: calc(100vh - 290px);;*/
+/*		}*/
+/*}*/

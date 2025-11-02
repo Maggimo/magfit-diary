@@ -3,8 +3,7 @@ import { useUserStore } from "../../entities/user/slice/userStore.ts";
 import { refreshTokensRequest } from "./userApi.ts";
 
 export const $api = axios.create({
-  // baseURL: "http://127.0.0.1:3000/api/",
-  baseURL: "https://magfit-diary-backend.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 

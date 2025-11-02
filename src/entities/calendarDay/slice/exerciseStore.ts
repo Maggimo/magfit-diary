@@ -14,7 +14,7 @@ interface CalendarStore {
   observableDate: dayjs.Dayjs;
   setObservableDate: (date: Dayjs) => void;
   loadDaysFromLocalStorage: (date: Dayjs) => void;
-  addExercise: () => void;
+  addExercise: (name: string, group: string) => void;
   setExerciseName: (
     exerciseParams: ExerciseOption | null,
     exercise: Exercise,
@@ -46,7 +46,7 @@ const getDaysFromLocalStorage = (date: Dayjs) => {
   };
 };
 
-const generateExercise = () => {
+const generateExercise = (name: string, group: string) => {
   return {
     sets: [
       {
@@ -56,8 +56,8 @@ const generateExercise = () => {
       },
     ],
     id: crypto.randomUUID(),
-    category: "Другое",
-    name: "Упражнение",
+    category: group,
+    name: name,
   };
 };
 
@@ -106,10 +106,10 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
       };
     }),
 
-  addExercise: () =>
+  addExercise: (name, group) =>
     set((state) => {
       const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
-      oldExercises.push(generateExercise());
+      oldExercises.push(generateExercise(name, group));
       const newDays = replaceExercises(state, dateKey, oldExercises);
 
       return {

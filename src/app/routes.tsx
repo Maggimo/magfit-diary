@@ -1,7 +1,8 @@
 import { type JSX } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useUserStore } from "../entities/user/slice/userStore.ts";
-import { HomePage, LogInPage } from "../pages";
+import { HomePage, LogInPage, TimerPage } from "../pages";
+import { ExercisePage } from "../pages/ExercisePage.tsx";
 
 export const AppRoutes = () => {
   const accessToken = useUserStore.getState().accessToken;
@@ -18,6 +19,22 @@ export const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <HomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/exercises"
+        element={
+          <ProtectedRoute>
+            <ExercisePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/timer"
+        element={
+          <ProtectedRoute>
+            <TimerPage />
           </ProtectedRoute>
         }
       />

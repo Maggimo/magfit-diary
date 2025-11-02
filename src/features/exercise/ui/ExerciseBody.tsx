@@ -53,7 +53,7 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
     }
   };
   return (
-    <div className={style.sets}>
+    <div>
       {exercise.sets.map((set, idx) => {
         return (
           <div className={style.row} key={set.id}>
@@ -84,7 +84,8 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
           </div>
         );
       })}
-      <div className={style.row}>
+      <div className={style.cardFooter}>
+        <div></div>
         <CustomButton buttonHandler={() => addSetToExercise(exercise)}>
           Добавить подход
         </CustomButton>

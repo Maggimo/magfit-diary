@@ -1,18 +1,11 @@
-import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
+import { AddExercise } from "../../features/addExercise";
 import { ExerciseCard } from "../../features/exercise";
 import { useCalendarStore } from "../../entities/calendarDay";
-import { CustomButton } from "../../shared/ui";
 import style from "./ExerciseList.module.css";
-import ViewHeadlineIcon from "@mui/icons-material/ViewHeadline";
-import { Button } from "@mui/material";
 
-interface ExerciseListProps {
-  setDrawerVisibility: Dispatch<SetStateAction<boolean>>;
-}
-
-export const ExerciseList = ({ setDrawerVisibility }: ExerciseListProps) => {
+export const ExerciseList = () => {
   const days = useCalendarStore((state) => state.days);
-  const addExercise = useCalendarStore((state) => state.addExercise);
   const selectedDate = useCalendarStore((state) => state.selectedDate);
   const loadDaysFromLocalStorage = useCalendarStore(
     (state) => state.loadDaysFromLocalStorage,
@@ -20,10 +13,6 @@ export const ExerciseList = ({ setDrawerVisibility }: ExerciseListProps) => {
   const observableDate = useCalendarStore((state) => state.observableDate);
   const exerciseArray =
     days[selectedDate.format("DD-MM-YYYY")]?.exercises ?? [];
-
-  const btnHandler = () => {
-    addExercise();
-  };
 
   useEffect(() => {
     loadDaysFromLocalStorage(observableDate);
@@ -41,16 +30,8 @@ export const ExerciseList = ({ setDrawerVisibility }: ExerciseListProps) => {
         ))}
       </div>
       <div className={style.footer}>
-        <Button
-          color="inherit"
-          onClick={() => setDrawerVisibility((prev) => !prev)}
-        >
-          <ViewHeadlineIcon />
-        </Button>
-        <div className={style.addButton}>
-          <CustomButton buttonHandler={btnHandler}>
-            Добавить упражнение
-          </CustomButton>
+        <div>
+          <AddExercise />
         </div>
       </div>
     </div>

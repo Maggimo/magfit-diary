@@ -39,7 +39,7 @@ export function ListInput<T>({
         popupIcon={null}
         disableClearable={true}
         sx={{
-          width: 200,
+          minWidth: 150,
           "&.Mui-disabled": {
             color: "black",
             WebkitTextFillColor: "black",
@@ -63,7 +63,6 @@ export function ListInput<T>({
         slotProps={{
           paper: {
             sx: {
-              // выпадающий список
               fontFamily: "'Roboto Condensed', sans-serif",
               fontSize: "14px",
             },
