@@ -1,5 +1,4 @@
 .calendar {
-		margin-bottom: 2em;
 		border-radius: 10px;
 		box-shadow: 0 8px 10px #dcdcdc;
 }
@@ -20,7 +19,7 @@
 		justify-content: space-around;
 		height: 100%;
 		width: 100dvw;
-		padding-bottom: 1.5em;
+		/*padding-bottom: 1.5em;*/
 		padding-top: 0.5em;
 
 }

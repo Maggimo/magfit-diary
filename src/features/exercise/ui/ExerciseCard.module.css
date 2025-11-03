@@ -30,6 +30,7 @@
 }
 
 .exerciseName {
+		z-index: -5;
 		font-size: 1em;
 }
 

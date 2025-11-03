@@ -1,4 +1,4 @@
-import dayjs, { type Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { create } from "zustand";
 import type { ExerciseOption } from "../../../features/exercise/ui/ExerciseCard.tsx";
@@ -9,11 +9,11 @@ dayjs.locale("ru");
 
 interface CalendarStore {
   days: Record<string, CalendarDay>;
-  selectedDate: Dayjs;
-  setSelectedDate: (date: Dayjs) => void;
+  selectedDate: dayjs.Dayjs;
+  setSelectedDate: (date: dayjs.Dayjs) => void;
   observableDate: dayjs.Dayjs;
-  setObservableDate: (date: Dayjs) => void;
-  loadDaysFromLocalStorage: (date: Dayjs) => void;
+  setObservableDate: (date: dayjs.Dayjs) => void;
+  loadDaysFromLocalStorage: (date: dayjs.Dayjs) => void;
   addExercise: (name: string, group: string) => void;
   setExerciseName: (
     exerciseParams: ExerciseOption | null,
@@ -30,7 +30,7 @@ interface CalendarStore {
   deleteSet: (exercise: Exercise, exerciseSet: ExerciseSet) => void;
 }
 
-const getDaysFromLocalStorage = (date: Dayjs) => {
+const getDaysFromLocalStorage = (date: dayjs.Dayjs) => {
   const prevDate = dayjs(date.add(-1, "month"));
   const prevDateKey = prevDate.format("MM-YYYY");
   const prevDays = JSON.parse(localStorage.getItem(prevDateKey) ?? "{}");
@@ -62,7 +62,7 @@ const generateExercise = (name: string, group: string) => {
 };
 
 const saveDaysToLocalStorage = (
-  date: Dayjs,
+  date: dayjs.Dayjs,
   newDays: Record<string, CalendarDay>,
 ) => {
   localStorage.setItem(date.format("MM-YYYY"), JSON.stringify(newDays));
@@ -155,11 +155,19 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
   addSetToExercise: (exercise) =>
     set((state) => {
       const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
+      const lastSet = exercise.sets[exercise.sets.length - 1];
       const newExercises = oldExercises.map((ex) => {
         if (ex.id !== exercise.id) return ex;
         return {
           ...ex,
-          sets: [...ex.sets, { id: crypto.randomUUID(), weight: 0, reps: 0 }],
+          sets: [
+            ...ex.sets,
+            {
+              id: crypto.randomUUID(),
+              weight: lastSet.weight,
+              reps: lastSet.reps,
+            },
+          ],
         };
       });
       const newDays = replaceExercises(state, dateKey, newExercises);

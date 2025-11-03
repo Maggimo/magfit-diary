@@ -52,13 +52,11 @@ export const ProfileDropDownMenu = () => {
   };
 
   const logout = () => {
-    logoutRequest(user.userName)
-      .catch((reason) => console.log(reason))
-      .finally(() => {
-        useUserStore.getState().reset();
-        localStorage.clear();
-        window.location.reload();
-      });
+    logoutRequest(user.userName).finally(() => {
+      useUserStore.getState().reset();
+      localStorage.clear();
+      window.location.reload();
+    });
   };
 
   return (

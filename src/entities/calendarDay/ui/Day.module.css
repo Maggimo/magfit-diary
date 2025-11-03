@@ -24,6 +24,11 @@
 		font-weight: bold;
 }
 
+.anotherMonth {
+		background-color: #bcbcbc;
+		opacity: 0.5;
+}
+
 .selectedDay {
 		composes: dayNumber;
 		background-color: rgba(62, 65, 255, 0.18);
