@@ -13,7 +13,7 @@ export default defineConfig({
       includeAssets: ["logo.svg"],
       manifest: {
         id: "/",
-        presetName: "MagFitDiary",
+        name: "MagFitDiary",
         short_name: "MagFitDiary",
         description: "Фитнес-дневник тренировок",
         theme_color: "#000000",
