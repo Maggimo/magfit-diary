@@ -1,18 +1,17 @@
 import { type JSX } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { useUserStore } from "../entities/user/slice/userStore.ts";
-import { HomePage, LogInPage, TimerPage } from "../pages";
+import { HomePage, TimerPage } from "../pages";
 import { ExercisePage } from "../pages/ExercisePage.tsx";
 
 export const AppRoutes = () => {
-  const accessToken = useUserStore.getState().accessToken;
+  // const accessToken = useUserStore.getState().accessToken;
 
   return (
     <Routes>
-      <Route
-        path="/login"
-        element={accessToken ? <Navigate to="/" replace /> : <LogInPage />}
-      />
+      {/*<Route*/}
+      {/*  path="/login"*/}
+      {/*  element={accessToken ? <Navigate to="/" replace /> : <LogInPage />}*/}
+      {/*/>*/}
 
       <Route
         path="/"
@@ -45,6 +44,7 @@ export const AppRoutes = () => {
 };
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const accessToken = useUserStore.getState().accessToken;
-  return accessToken ? children : <Navigate to="/login" replace />;
+  // const accessToken = useUserStore.getState().accessToken;
+  // return accessToken ? children : <Navigate to="/login" replace />;
+  return children;
 };

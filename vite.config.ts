@@ -12,7 +12,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["logo.svg"],
       manifest: {
-        name: "MagFitDiary",
+        id: "/",
+        presetName: "MagFitDiary",
         short_name: "MagFitDiary",
         description: "Фитнес-дневник тренировок",
         theme_color: "#000000",
@@ -112,6 +113,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@/ui": path.resolve(__dirname, "./src/shared/ui"),
     },
   },
 });

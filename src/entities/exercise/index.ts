@@ -1,1 +1,6 @@
-export type { Exercise, ExerciseSet, ExerciseCategory } from "./model/types.ts";
+export type {
+  Exercise,
+  ExerciseSet,
+  ExerciseCategory,
+  TrainingPreset,
+} from "./model/types.ts";

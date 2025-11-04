@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 
 export const Timer = () => {
   const [minutes, setMinutes] = useState(2);
-  const [seconds, setSeconds] = useState(13);
+  const [seconds, setSeconds] = useState(0);
   const [initialMinutes, setInitialMinutes] = useState(minutes);
   const [initialSeconds, setInitialSeconds] = useState(seconds);
   const [isRunning, setIsRunning] = useState(false);
@@ -35,7 +35,6 @@ export const Timer = () => {
               if (prevMinutes > 0) {
                 return prevMinutes - 1;
               } else {
-                // Timer finished
                 setIsRunning(false);
                 return 0;
               }
@@ -77,7 +76,7 @@ export const Timer = () => {
   return (
     <div className="flex flex-col items-center space-y-3 mt-4">
       <div className="flex flex-col items-center  text-9xl text-center">
-        <div>
+        <div className="flex flex-col items-center space-y-3">
           <Input
             className={`text-9xl md:text-9xl h-35 w-50  border-none shadow-none font-light text-center transition-[font-weight] duration-500 ${isRunning && "font-bold"}`}
             onChange={(e) =>

@@ -5889,7 +5889,7 @@ var defaultCreateStyledComponent = styled_default$1("div", {
 });
 var useThemePropsDefault = (inProps) => useThemeProps({
 	props: inProps,
-	name: "MuiContainer",
+	presetName: "MuiContainer",
 	defaultTheme: defaultTheme$1
 });
 var useUtilityClasses$1 = (ownerState, componentName) => {
@@ -6332,30 +6332,30 @@ const theme2 = createTheme({ palette: {
 		mode,
 		primary: augmentColor({
 			color: primary,
-			name: "primary"
+			presetName: "primary"
 		}),
 		secondary: augmentColor({
 			color: secondary,
-			name: "secondary",
+			presetName: "secondary",
 			mainShade: "A400",
 			lightShade: "A200",
 			darkShade: "A700"
 		}),
 		error: augmentColor({
 			color: error,
-			name: "error"
+			presetName: "error"
 		}),
 		warning: augmentColor({
 			color: warning,
-			name: "warning"
+			presetName: "warning"
 		}),
 		info: augmentColor({
 			color: info,
-			name: "info"
+			presetName: "info"
 		}),
 		success: augmentColor({
 			color: success,
-			name: "success"
+			presetName: "success"
 		}),
 		grey: grey_default,
 		contrastThreshold,

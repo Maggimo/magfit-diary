@@ -4,19 +4,19 @@ export interface ExerciseSet {
   reps: number;
 }
 
-export type ExerciseCategory =
-  | "Грудь"
-  | "Спина"
-  | "Ноги"
-  | "Руки"
-  | "Пресс"
-  | "Кардио"
-  | "Другое"
-  | "Плечи";
-
 export interface Exercise {
   id: string;
   name: string;
   category: string;
   sets: ExerciseSet[];
+}
+
+export interface ExerciseCategory {
+  category: string;
+  exercises: string[];
+}
+
+export interface TrainingPreset {
+  presetName: string;
+  exercises: string[];
 }

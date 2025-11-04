@@ -21,8 +21,7 @@ import {
 } from "@/components/ui/command.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { useCalendarStore } from "../../../entities/calendarDay";
-import { allExercises } from "../../../shared/utilities";
-import { trainingPreset } from "../../../shared/utilities/const.ts";
+import { allExercises, trainingPreset } from "../../../shared/utilities";
 
 export const AddExercise = () => {
   const [selectedPresetCheckboxes, setSelectedPresetCheckboxes] = useState<
@@ -57,7 +56,8 @@ export const AddExercise = () => {
     selectedExerciseCheckboxes.forEach((exercise) => {
       addExercise(
         exercise,
-        allExercises.find((group) => group.exercises.includes(exercise))!.group,
+        allExercises.find((group) => group.exercises.includes(exercise))!
+          .category,
       );
     });
     selectedPresetCheckboxes.forEach((selectedPresetName) => {
@@ -67,7 +67,7 @@ export const AddExercise = () => {
           addExercise(
             exercise,
             allExercises.find((group) => group.exercises.includes(exercise))!
-              .group,
+              .category,
           );
         });
     });
@@ -83,7 +83,11 @@ export const AddExercise = () => {
       onClose={() => setDrawerOpen(false)}
     >
       <DrawerTrigger asChild>
-        <Button variant="outline" onClick={() => setDrawerOpen(true)}>
+        <Button
+          variant="outline"
+          className="text-xl justify-center w-full p-6 border-1 border-black rounded-xl bg-white hover:bg-gray-50 text-black"
+          onClick={() => setDrawerOpen(true)}
+        >
           Добавить тренировку
         </Button>
       </DrawerTrigger>
@@ -101,7 +105,7 @@ export const AddExercise = () => {
               <CommandInput placeholder="Поиск..." />
               <CommandList className={"max-h-full overflow-y-scroll"}>
                 {allExercises.map((group) => (
-                  <CommandGroup heading={group.group} key={group.group}>
+                  <CommandGroup heading={group.category} key={group.category}>
                     <CommandSeparator />
                     {group.exercises.map((name) => (
                       <CommandItem

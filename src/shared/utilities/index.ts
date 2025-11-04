@@ -1,2 +1,2 @@
-export { allExercises, daysOfWeek, months } from "./const.ts";
+export { allExercises, trainingPreset, daysOfWeek, months } from "./const.ts";
 export { cn } from "./classMerge.ts";

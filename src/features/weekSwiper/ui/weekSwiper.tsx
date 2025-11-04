@@ -33,7 +33,6 @@ export const WeekSwiper = ({
     }
     return initialWeeks;
   });
-
   const weeksRender = () => {
     return weeks.map((week) => (
       <SwiperSlide key={week.start.toString()}>

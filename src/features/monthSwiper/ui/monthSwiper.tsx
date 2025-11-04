@@ -22,9 +22,8 @@ export const MonthSwiper = ({
   observableDate,
 }: MonthSwiperProps) => {
   const [months, setMonths] = useState(() => {
-    const current = selectedDate.startOf("month").startOf("isoWeek");
+    const current = selectedDate.startOf("month");
     const initialMonths = [];
-
     for (let i = -PRELOAD_MONTHS; i <= PRELOAD_MONTHS; i++) {
       initialMonths.push(generateMonth(current.add(i, "month")));
     }
@@ -36,9 +35,8 @@ export const MonthSwiper = ({
   const handleMonthSlideChange = (swiper: any) => {
     const { activeIndex } = swiper;
     const lastIndex = months.length - 1;
-    setObservableDate(months[activeIndex].start.add(31, "day"));
+    setObservableDate(months[activeIndex].start.add(15, "day"));
 
-    // если дошли до конца — добавляем ещё 5 недель вперёд
     if (activeIndex >= lastIndex - 2) {
       const nextStart = months[lastIndex].start.add(1, "month");
       const newMonths: Week[] = [];
@@ -48,7 +46,6 @@ export const MonthSwiper = ({
       setMonths((prev) => [...prev, ...newMonths]);
     }
 
-    // если дошли к началу — добавляем 5 недель назад
     if (activeIndex <= 2) {
       const prevStart = months[0].start.subtract(PRELOAD_MONTHS, "month");
       const newMonths: Week[] = [];

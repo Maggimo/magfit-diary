@@ -2,6 +2,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { PanInfo } from "motion";
+import { AnimatePresence } from "motion/react";
 import { useState } from "react";
 import {
   Command,
@@ -48,7 +49,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
       {
         name,
         group: allExercises.find((group) => group.exercises.includes(name))!
-          .group,
+          .category,
       },
       exercise,
     );
@@ -112,8 +113,8 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
                         {allExercises.map((element) => {
                           return (
                             <CommandGroup
-                              heading={element.group}
-                              key={element.group}
+                              heading={element.category}
+                              key={element.category}
                             >
                               {element.exercises.map((exerciseName) => (
                                 <CommandItem
@@ -135,7 +136,20 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
 
             <div>{isEditable ? <ExpandLess /> : <ExpandMore />}</div>
           </div>
-          {isEditable && <ExerciseBody exercise={exercise} />}
+          <AnimatePresence>
+            {isEditable && (
+              <motion.div
+                key="body"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                style={{ overflow: "hidden" }}
+              >
+                <ExerciseBody exercise={exercise} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         <div className={"flex justify-center items-center"}>
           <DeleteIcon color="error" />

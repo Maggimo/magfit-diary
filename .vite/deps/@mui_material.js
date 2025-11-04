@@ -390,7 +390,7 @@ var defaultCreateStyledComponent$1 = styled_default$1("div", {
 function useThemePropsDefault$1(props) {
 	return useThemeProps$1({
 		props,
-		name: "MuiGrid",
+		presetName: "MuiGrid",
 		defaultTheme: defaultTheme$2
 	});
 }
@@ -550,7 +550,7 @@ var defaultCreateStyledComponent = styled_default$1("div", {
 function useThemePropsDefault(props) {
 	return useThemeProps$1({
 		props,
-		name: "MuiStack",
+		presetName: "MuiStack",
 		defaultTheme: defaultTheme$1
 	});
 }
@@ -1163,7 +1163,7 @@ function responsiveFontSizes(themeInput, options = {}) {
 function useThemeProps({ props, name }) {
 	return useThemeProps$1({
 		props,
-		name,
+		presetName: name,
 		defaultTheme: defaultTheme_default,
 		themeId: identifier_default
 	});

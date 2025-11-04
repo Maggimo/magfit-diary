@@ -11,31 +11,31 @@
 
 export const allExercises = [
   {
-    group: "Ноги",
+    category: "Ноги",
     exercises: ["Приседания", "Жим ногами"],
   },
   {
-    group: "Руки",
+    category: "Руки",
     exercises: ["Подъём гантели стоя", "Молотки"],
   },
   {
-    group: "Плечи",
+    category: "Плечи",
     exercises: ["Махи в сторону", "Армейский жим"],
   },
   {
-    group: "Грудь",
+    category: "Грудь",
     exercises: ["Жим лежа", "Разведение гантелей лежа"],
   },
   {
-    group: "Спина",
+    category: "Спина",
     exercises: ["Подтягивания", "Тяга верхнего блока"],
   },
   {
-    group: "Кардио",
+    category: "Кардио",
     exercises: ["Бег", "Велотренажер"],
   },
   {
-    group: "Пресс",
+    category: "Пресс",
     exercises: ["Скручивания"],
   },
 ];
