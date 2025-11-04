@@ -1,4 +1,4 @@
-import LogoutIcon from "@mui/icons-material/Logout";
+// import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NoteAltOutlinedIcon from "@mui/icons-material/NoteAltOutlined";
@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 import { type MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../../../entities/user/slice/userStore.ts";
-import { logoutRequest } from "../../../shared/api/userApi.ts";
+// import { useUserStore } from "../../../entities/user/slice/userStore.ts";
+// import { logoutRequest } from "../../../shared/api/userApi.ts";
 
 const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(({}) => ({
   "& .MuiPaper-root": {
@@ -39,7 +39,7 @@ const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(({}) => ({
 export const ProfileDropDownMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
-  const user = useUserStore((state) => state.user);
+  // const user = useUserStore((state) => state.user);
 
   const open = Boolean(anchorEl);
 
@@ -51,13 +51,13 @@ export const ProfileDropDownMenu = () => {
     setAnchorEl(null);
   };
 
-  const logout = () => {
-    logoutRequest(user.userName).finally(() => {
-      useUserStore.getState().reset();
-      localStorage.clear();
-      window.location.reload();
-    });
-  };
+  // const logout = () => {
+  //   logoutRequest(user.userName).finally(() => {
+  //     useUserStore.getState().reset();
+  //     localStorage.clear();
+  //     window.location.reload();
+  //   });
+  // };
 
   return (
     <div>
@@ -109,10 +109,10 @@ export const ProfileDropDownMenu = () => {
           <TimerOutlinedIcon />
           Таймер
         </MenuItem>
-        <MenuItem onClick={logout}>
-          <LogoutIcon />
-          Выйти
-        </MenuItem>
+        {/*<MenuItem onClick={logout}>*/}
+        {/*  <LogoutIcon />*/}
+        {/*  Выйти*/}
+        {/*</MenuItem>*/}
       </StyledMenu>
     </div>
   );

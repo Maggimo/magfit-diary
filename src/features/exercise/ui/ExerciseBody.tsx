@@ -4,9 +4,10 @@ import {
   TextField,
   type TextFieldProps,
 } from "@mui/material";
+import { AnimatePresence } from "motion/react";
+import * as motion from "motion/react-client";
 import type { ChangeEvent } from "react";
 import { useCalendarStore } from "../../../entities/calendarDay";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import type { Exercise, ExerciseSet } from "../../../entities/exercise";
 import style from "./ExerciseCard.module.css";
@@ -36,7 +37,6 @@ const ExerciseInput = styled((props: TextFieldProps) => (
 export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
   const onChangeHandler = useCalendarStore((store) => store.setExerciseValues);
   const addSetToExercise = useCalendarStore((store) => store.addSetToExercise);
-  const deleteExercise = useCalendarStore((store) => store.deleteExercise);
   const deleteSet = useCalendarStore((store) => store.deleteSet);
 
   const inputHandler = (
@@ -46,52 +46,61 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
     if (event.target.value.length <= 3) {
       onChangeHandler(
         event.target.value,
-        event.target.id as keyof ExerciseSet,
+        event.target.name as keyof ExerciseSet,
         set.id,
         exercise,
       );
     }
   };
   return (
-    <div>
-      {exercise.sets.map((set, idx) => {
-        return (
-          <div className={style.row} key={set.id}>
-            <div className={style.setIndex}>{idx + 1}</div>
-            <div className={style.cell}>
-              <ExerciseInput
-                id={"reps"}
-                value={set.reps === 0 ? "" : set.reps}
-                onChange={(e) => {
-                  inputHandler(e, set);
-                }}
-              />
-            </div>
-            <div className={style.cell}>
-              <ExerciseInput
-                id={"weight"}
-                value={set.weight === 0 ? "" : set.weight}
-                onChange={(e) => {
-                  inputHandler(e, set);
-                }}
-              />
-            </div>
-            <div>
-              <IconButton onClick={() => deleteSet(exercise, set)}>
-                <CloseIcon />
-              </IconButton>
-            </div>
-          </div>
-        );
-      })}
+    <div className={"w-[100dvw]"}>
+      <AnimatePresence>
+        {exercise.sets.map((set, idx) => {
+          return (
+            <motion.div
+              key={set.id}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              style={{ overflow: "hidden" }}
+            >
+              <div className={style.row}>
+                <div className={style.setIndex}>{idx + 1}</div>
+                <div className={style.cell}>
+                  {/*<InputNumber/>*/}
+                  <ExerciseInput
+                    name={"reps"}
+                    value={set.reps}
+                    onChange={(e) => {
+                      inputHandler(e, set);
+                    }}
+                  />
+                </div>
+                <div className={style.cell}>
+                  <ExerciseInput
+                    name={"weight"}
+                    value={set.weight === 0 ? "" : set.weight}
+                    onChange={(e) => {
+                      inputHandler(e, set);
+                    }}
+                  />
+                </div>
+                <div>
+                  <IconButton onClick={() => deleteSet(exercise, set)}>
+                    <CloseIcon />
+                  </IconButton>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
       <div className={style.cardFooter}>
         <div></div>
         <CustomButton buttonHandler={() => addSetToExercise(exercise)}>
           Добавить подход
         </CustomButton>
-        <IconButton onClick={() => deleteExercise(exercise)}>
-          <DeleteIcon />
-        </IconButton>
       </div>
     </div>
   );

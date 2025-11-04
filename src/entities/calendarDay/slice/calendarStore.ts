@@ -155,7 +155,11 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
   addSetToExercise: (exercise) =>
     set((state) => {
       const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
-      const lastSet = exercise.sets[exercise.sets.length - 1];
+      const lastSet = exercise.sets[exercise.sets.length - 1] ?? {
+        id: 0,
+        weight: 0,
+        reps: 0,
+      };
       const newExercises = oldExercises.map((ex) => {
         if (ex.id !== exercise.id) return ex;
         return {
