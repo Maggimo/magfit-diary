@@ -23,10 +23,8 @@ import {
 import { Button } from "@/shared/ui/shadCNComponents/ui/button.tsx";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/shared/ui/shadCNComponents/ui/dialog.tsx";
@@ -168,12 +166,6 @@ export const StatisticCard = ({ exerciseName }: { exerciseName: string }) => {
               </div>
             </CardFooter>
           </Card>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button type="submit">Save changes</Button>
-          </DialogFooter>
         </DialogContent>
       </form>
     </Dialog>
