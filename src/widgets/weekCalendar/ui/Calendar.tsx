@@ -1,3 +1,4 @@
+import { GripHorizontal } from "lucide-react";
 import { type PanInfo } from "motion";
 import { useState } from "react";
 // @ts-ignore
@@ -6,36 +7,24 @@ import { motion, AnimatePresence } from "motion/react";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import isoWeek from "dayjs/plugin/isoWeek";
-import { useCalendarStore } from "../../../entities/calendarDay";
-import { MonthSwiper } from "../../../features/monthSwiper";
-import { WeekSwiper } from "../../../features/weekSwiper";
+import { useCalendarStore } from "@/entities/calendarDay";
+import { MonthSwiper } from "@/features/monthSwiper";
+import { WeekSwiper } from "@/features/weekSwiper";
 import styles from "./WeekCalendar.module.css";
 
 dayjs.extend(isoWeek); // 👉 Неделя начинается с понедельника
 dayjs.locale("ru");
 
-const hasExercises = (date: dayjs.Dayjs) => {
-  const day = date.format("DD-MM-YYYY");
-  const days = useCalendarStore((state) => state.days);
-  const dayExercises = days[day]?.exercises ?? [];
-  return dayExercises.length > 0;
-};
-
 export const WeekSlider = () => {
   const setObservableDate = useCalendarStore(
     (state) => state.setObservableDate,
   );
-  const observableDate = useCalendarStore((state) => state.observableDate);
   const selectedDate = useCalendarStore((state) => state.selectedDate);
-  const setSelectedDate = useCalendarStore((state) => state.setSelectedDate);
   const [calendarExpanded, setCalendarExpanded] = useState(false);
 
   const props = {
-    observableDate,
     setObservableDate,
     selectedDate,
-    setSelectedDate,
-    hasExercises,
   };
 
   const calendarPullHandler = (info: PanInfo) => {
@@ -63,7 +52,7 @@ export const WeekSlider = () => {
       >
         <div
           className={`${styles.calendar} relative overflow-hidden transition-all duration-1000 ${
-            calendarExpanded ? "h-[380px]" : "h-[100px]"
+            calendarExpanded ? "h-[380px]" : "h-[105px]"
           }`}
         >
           <AnimatePresence mode="wait">
@@ -91,6 +80,9 @@ export const WeekSlider = () => {
               </motion.div>
             )}
           </AnimatePresence>
+        </div>
+        <div className={"flex justify-center relative bottom-8"}>
+          <GripHorizontal />
         </div>
       </motion.div>
     </div>

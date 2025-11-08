@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import type { Week } from "../../../widgets/weekCalendar/model/weekType.ts";
+import type { daysArray } from "@/entities/calendarDay";
 
-export const generateMonth = (start: dayjs.Dayjs): Week => {
+export const generateMonth = (start: dayjs.Dayjs): daysArray => {
   start = start.startOf("isoWeek");
   const days = Array.from({ length: 42 }, (_, i) => start.add(i, "day"));
   return { start, days };

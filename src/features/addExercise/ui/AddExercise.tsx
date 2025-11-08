@@ -1,7 +1,6 @@
-import { Dumbbell, ListChecks } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../shared/ui/shadCNComponents/ui/button";
 import {
   Drawer,
   DrawerContent,
@@ -10,18 +9,18 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from "../../../shared/ui/shadCNComponents/ui/drawer";
 import {
-  Command,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command.tsx";
-import { Checkbox } from "@/components/ui/checkbox.tsx";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../../shared/ui/shadCNComponents/ui/popover";
+import { Dumbbell, Zap } from "lucide-react";
+import { CreateExercise } from "@/features/createExercise";
+import { CreatePreset } from "@/features/createPreset";
 import { useCalendarStore } from "../../../entities/calendarDay";
-import { allExercises, trainingPreset } from "../../../shared/utilities";
+import { useExerciseStore } from "../../../entities/exercise/slice/exerciseStore.ts";
+import { FullExerciseCommand } from "../../fullExerciseList/ui/fullExerciseCommand.tsx";
 
 export const AddExercise = () => {
   const [selectedPresetCheckboxes, setSelectedPresetCheckboxes] = useState<
@@ -32,7 +31,13 @@ export const AddExercise = () => {
   >([]);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
+  const [openAddPopover, setOpenAddPopover] = useState(false);
+  const [openExerciseModal, setOpenExerciseModal] = useState(false);
+  const [openPresetModal, setOpenPresetModal] = useState(false);
+
   const addExercise = useCalendarStore((state) => state.addExercise);
+  const allExercises = useExerciseStore((state) => state.exercises);
+  const trainingPreset = useExerciseStore((state) => state.trainingPreset);
 
   const presetSelectHandler = (value: string) => {
     setSelectedPresetCheckboxes((prevState) => {
@@ -77,94 +82,89 @@ export const AddExercise = () => {
   };
 
   return (
-    <Drawer
-      direction="right"
-      open={drawerOpen}
-      onClose={() => setDrawerOpen(false)}
-    >
-      <DrawerTrigger asChild>
-        <Button
-          variant="outline"
-          className="text-xl justify-center w-full p-6 border-1 border-black rounded-xl bg-white hover:bg-gray-50 text-black"
-          onClick={() => setDrawerOpen(true)}
-        >
-          Добавить тренировку
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent className="left-0 after:content-none after:hidden ">
-        <div className="mx-auto w-full">
-          <DrawerHeader>
-            <DrawerTitle className={"text-2xl"}>
-              Добавьте упражнения
-            </DrawerTitle>
-            <DrawerDescription></DrawerDescription>{" "}
-            {/*пустой чтобы не было ошибки в консоли*/}
-          </DrawerHeader>
-          <div>
-            <Command className="w-full h-[calc(100dvh-180px)]">
-              <CommandInput placeholder="Поиск..." />
-              <CommandList className={"max-h-full overflow-y-scroll"}>
-                {allExercises.map((group) => (
-                  <CommandGroup heading={group.category} key={group.category}>
-                    <CommandSeparator />
-                    {group.exercises.map((name) => (
-                      <CommandItem
-                        key={name}
-                        value={name}
-                        className="text-base flex justify-between"
-                        onSelect={exerciseSelectHandler}
-                      >
-                        <div className={"flex gap-2 items-center"}>
-                          <Dumbbell className="text-muted-foreground" />
-                          <span className="text-base font-medium">{name}</span>
-                        </div>
-                        <Checkbox
-                          value={name}
-                          checked={selectedExerciseCheckboxes.includes(name)}
-                        />
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                ))}
-                <CommandGroup heading={"Пресеты"}>
-                  {trainingPreset.map((preset) => (
-                    <CommandItem
-                      key={preset.presetName}
-                      value={preset.presetName}
-                      className="flex flex-col items-start py-3"
-                      onSelect={presetSelectHandler}
-                    >
-                      <div className="flex justify-between w-full ">
-                        <div className="flex items-center gap-2">
-                          <ListChecks className="text-muted-foreground" />
-                          <span className="text-base font-medium">
-                            {preset.presetName}
-                          </span>
-                        </div>
-                        <Checkbox
-                          value={preset.presetName}
-                          checked={selectedPresetCheckboxes.includes(
-                            preset.presetName,
-                          )}
-                        />
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {preset.exercises.join(" • ")}
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
+    <div className="h-[50px]">
+      <Drawer
+        direction="right"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
+        <DrawerTrigger asChild>
+          <Button
+            variant="outline"
+            className="text-xl justify-center w-full p-6 border-1 border-black rounded-xl bg-white hover:bg-gray-50 text-black"
+            onClick={() => setDrawerOpen(true)}
+          >
+            Добавить тренировку
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent className="grid grid-rows-[auto_1fr_auto] h-[100dvh] overflow-hidden">
+          <div className="flex-shrink-0">
+            <DrawerHeader>
+              <DrawerTitle className={"text-2xl"}>
+                Добавьте упражнения
+              </DrawerTitle>
+              <DrawerDescription></DrawerDescription>
+              {/*пустой чтобы не было ошибки в консоли*/}
+            </DrawerHeader>
           </div>
-          <DrawerFooter className="absolute w-full bottom-0">
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <FullExerciseCommand
+              {...{
+                selectedExerciseCheckboxes,
+                selectedPresetCheckboxes,
+                presetSelectHandler,
+                exerciseSelectHandler,
+                checkable: true,
+              }}
+            />
+          </div>
+
+          <DrawerFooter className="w-full flex-shrink-0">
+            <Popover open={openAddPopover} onOpenChange={setOpenAddPopover}>
+              <PopoverTrigger asChild>
+                <Button>Создать упражнение</Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-64 p-2" align="center">
+                <div className="flex flex-col gap-2">
+                  <Button
+                    variant="ghost"
+                    className="justify-start text-lg py-3"
+                    onClick={() => {
+                      setOpenAddPopover(false);
+                      setOpenExerciseModal(true);
+                    }}
+                  >
+                    <Dumbbell className="mr-2 h-5 w-5" />
+                    Упражнение
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="justify-start text-lg py-3"
+                    onClick={() => {
+                      setOpenAddPopover(false);
+                      setOpenPresetModal(true);
+                    }}
+                  >
+                    <Zap className="mr-2 h-5 w-5" />
+                    Тренировку
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
             <Button onClick={submitHandler}>Добавить</Button>
             <Button variant="outline" onClick={() => setDrawerOpen(false)}>
               Отмена
             </Button>
           </DrawerFooter>
-        </div>
-      </DrawerContent>
-    </Drawer>
+        </DrawerContent>
+      </Drawer>
+      {/* Модальное окно добавления упражнения */}
+      <CreateExercise
+        open={openExerciseModal}
+        onOpenChange={setOpenExerciseModal}
+      />
+      {/* Модальное окно добавления пресета */}
+      <CreatePreset open={openPresetModal} onOpenChange={setOpenPresetModal} />
+    </div>
   );
 };

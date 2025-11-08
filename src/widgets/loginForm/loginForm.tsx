@@ -1,8 +1,8 @@
 import type { AxiosResponse } from "axios";
 import { type MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../../entities/user/slice/userStore.ts";
-import { loginRequest, registrationRequest } from "../../shared/api/userApi.ts";
+import { useUserStore } from "@/entities/user/slice/userStore.ts";
+import { loginRequest, registrationRequest } from "@/shared/api/userApi.ts";
 import styles from "./loginForm.module.css";
 
 export const LoginForm = () => {

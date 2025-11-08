@@ -1,6 +1,3 @@
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import DeleteIcon from "@mui/icons-material/Delete";
 import type { PanInfo } from "motion";
 import { AnimatePresence } from "motion/react";
 import { useState } from "react";
@@ -11,8 +8,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../../../components/ui/command.tsx";
-import { Pencil } from "lucide-react";
+} from "../../../shared/ui/shadCNComponents/ui/command.tsx";
+import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
 import { useCalendarStore } from "../../../entities/calendarDay";
 import { allExercises } from "../../../shared/utilities";
 import { ExerciseBody } from "./ExerciseBody.tsx";
@@ -22,9 +19,9 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover.tsx";
+} from "../../../shared/ui/shadCNComponents/ui/popover.tsx";
 import * as motion from "motion/react-client";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "../../../shared/ui/shadCNComponents/ui/button.tsx";
 
 export type ExerciseOption = { group: string; name: string };
 
@@ -134,7 +131,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
               </div>
             </div>
 
-            <div>{isEditable ? <ExpandLess /> : <ExpandMore />}</div>
+            <div>{isEditable ? <ChevronUp /> : <ChevronDown />}</div>
           </div>
           <AnimatePresence>
             {isEditable && (
@@ -152,7 +149,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
           </AnimatePresence>
         </div>
         <div className={"flex justify-center items-center"}>
-          <DeleteIcon color="error" />
+          <Trash2 className="text-red-500" />
         </div>
       </motion.div>
     </div>

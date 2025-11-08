@@ -65,7 +65,16 @@ const saveDaysToLocalStorage = (
   date: dayjs.Dayjs,
   newDays: Record<string, CalendarDay>,
 ) => {
-  localStorage.setItem(date.format("MM-YYYY"), JSON.stringify(newDays));
+  let daysToSave = {};
+  for (const key in newDays) {
+    if (key.includes(date.format("MM-YYYY"))) {
+      daysToSave = {
+        ...daysToSave,
+        [key]: newDays[key],
+      };
+    }
+  }
+  localStorage.setItem(date.format("MM-YYYY"), JSON.stringify(daysToSave));
 };
 
 const getDateKeyAndOldExercises = (state: CalendarStore) => {

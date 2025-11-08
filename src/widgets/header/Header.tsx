@@ -1,10 +1,10 @@
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useCalendarStore } from "../../entities/calendarDay";
-import { firstLetterToUpperCase } from "../../shared/ui/stringFormat/functions.ts";
+import { useCalendarStore } from "@/entities/calendarDay";
+import { firstLetterToUpperCase } from "@/shared/utilities";
 import style from "./Header.module.css";
 
-import { ProfileDropDownMenu } from "../../features/profileDropDownMenu";
+import { ProfileDropDownMenu } from "@/features/profileDropDownMenu";
 
 interface HeaderProps {
   date?: boolean;

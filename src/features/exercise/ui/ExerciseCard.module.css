@@ -59,7 +59,7 @@
 
 .cell {
 		background-color: black;
-		padding: 20px;
+		padding: 10px;
 		border-radius: 30px;
 
 }
@@ -76,6 +76,7 @@
 		min-width: 260px;
 		flex-direction: row;
 		align-items: center;
+		justify-items: center;
 		justify-content: space-around;
 		padding: 15px 0;
 }

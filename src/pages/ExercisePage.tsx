@@ -1,5 +1,5 @@
 import { Header } from "@/widgets/index.ts";
-import { Separator } from "../components/ui/separator.tsx";
+import { Separator } from "../shared/ui/shadCNComponents/ui/separator.tsx";
 import { AllExercises } from "../widgets/allExercises";
 
 export const ExercisePage = () => {

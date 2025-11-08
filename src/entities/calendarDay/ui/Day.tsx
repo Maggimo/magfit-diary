@@ -1,7 +1,7 @@
-import CircleIcon from "@mui/icons-material/Circle";
 import dayjs, { Dayjs } from "dayjs";
-import { firstLetterToUpperCase } from "../../../shared/ui/stringFormat/functions.ts";
-import { cn } from "../../../shared/utilities";
+import { Dot } from "lucide-react";
+import { firstLetterToUpperCase } from "@/shared/utilities";
+import { cn } from "@/shared/utilities";
 import styles from "./Day.module.css";
 
 // import {} from "@/";
@@ -40,13 +40,11 @@ export const Day = ({
           !sameMonthFlag && styles.anotherMonth,
           styles.dayNumber,
         )}
-        aria-disabled={!sameMonthFlag}
       >
         {value.format("D")}
       </div>
-      {hasExercisesFlag && (
-        <CircleIcon sx={{ fontSize: "10px", paddingTop: "5px" }} />
-      )}
+
+      {hasExercisesFlag && <Dot className={"mb-[-20px] mt-[-5px]"} />}
     </div>
   );
 };

@@ -1,38 +1,18 @@
-import {
-  IconButton,
-  styled,
-  TextField,
-  type TextFieldProps,
-} from "@mui/material";
+import { X } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-client";
-import type { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
+import { Input } from "../../../shared/ui/shadCNComponents/ui/input.tsx";
+import { Button } from "../../../shared/ui/shadCNComponents/ui/button.tsx";
 import { useCalendarStore } from "../../../entities/calendarDay";
-import CloseIcon from "@mui/icons-material/Close";
 import type { Exercise, ExerciseSet } from "../../../entities/exercise";
+import { StatisticCard } from "../../../widgets/statisticCard/ui/statisticCard.tsx";
 import style from "./ExerciseCard.module.css";
-import { CustomButton } from "../../../shared/ui";
+import { CustomButton } from "@/shared/ui";
 
 interface ExerciseBodyProps {
   exercise: Exercise;
 }
-
-const ExerciseInput = styled((props: TextFieldProps) => (
-  <TextField
-    autoComplete="off"
-    variant="standard"
-    type="number"
-    placeholder={"0"}
-    {...props}
-  />
-))(({}) => ({
-  "& .MuiInputBase-input": {
-    fontFamily: "'Roboto Condensed', sans-serif",
-    fontSize: "2rem",
-    textAlign: "center",
-    color: "white",
-  },
-}));
 
 export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
   const onChangeHandler = useCalendarStore((store) => store.setExerciseValues);
@@ -68,17 +48,22 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
               <div className={style.row}>
                 <div className={style.setIndex}>{idx + 1}</div>
                 <div className={style.cell}>
-                  {/*<InputNumber/>*/}
-                  <ExerciseInput
+                  <Input
+                    className={"text-white border-0 text-center text-2xl"}
+                    type={"number"}
+                    placeholder={"Кол-во"}
                     name={"reps"}
-                    value={set.reps}
+                    value={set.reps === 0 ? "" : set.reps}
                     onChange={(e) => {
                       inputHandler(e, set);
                     }}
                   />
                 </div>
                 <div className={style.cell}>
-                  <ExerciseInput
+                  <Input
+                    className={"text-white border-0 text-center text-2xl"}
+                    type={"number"}
+                    placeholder={"Кг"}
                     name={"weight"}
                     value={set.weight === 0 ? "" : set.weight}
                     onChange={(e) => {
@@ -87,9 +72,12 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
                   />
                 </div>
                 <div>
-                  <IconButton onClick={() => deleteSet(exercise, set)}>
-                    <CloseIcon />
-                  </IconButton>
+                  <Button
+                    className={"bg-transparent text-black"}
+                    onClick={() => deleteSet(exercise, set)}
+                  >
+                    <X />
+                  </Button>
                 </div>
               </div>
             </motion.div>
@@ -97,8 +85,11 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
         })}
       </AnimatePresence>
       <div className={style.cardFooter}>
-        <div></div>
-        <CustomButton buttonHandler={() => addSetToExercise(exercise)}>
+        <StatisticCard exerciseName={exercise.name} />
+        <CustomButton
+          classes={"text-xl"}
+          buttonHandler={() => addSetToExercise(exercise)}
+        >
           Добавить подход
         </CustomButton>
       </div>

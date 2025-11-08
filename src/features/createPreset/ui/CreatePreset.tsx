@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../shared/ui/shadCNComponents/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,8 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+} from "../../../shared/ui/shadCNComponents/ui/dialog";
+import { Input } from "../../../shared/ui/shadCNComponents/ui/input";
 import { allExercises } from "@/shared/utilities/const.ts";
 import { useExerciseStore } from "../../../entities/exercise/slice/exerciseStore.ts";
 import type { NewPreset } from "../model/types";
@@ -21,7 +21,7 @@ interface CreatePresetProps {
 export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
   const [newPreset, setNewPreset] = useState<NewPreset>({
     presetName: "",
-    exercises: []
+    exercises: [],
   });
 
   const createTrainingPreset = useExerciseStore(
@@ -36,7 +36,6 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
   const handleCreate = () => {
     if (newPreset.presetName && newPreset.exercises.length > 0) {
       createTrainingPreset(newPreset);
-      console.log("Создание пресета:", newPreset);
       handleClose();
     }
   };
@@ -50,9 +49,7 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
     } else {
       setNewPreset({
         ...newPreset,
-        exercises: newPreset.exercises.filter(
-          (ex) => ex !== exercise,
-        ),
+        exercises: newPreset.exercises.filter((ex) => ex !== exercise),
       });
     }
   };
@@ -82,7 +79,7 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 max-[330px]:h-30 overflow-hidden">
             <label className="text-sm font-medium">Выберите упражнения</label>
             <div className="max-h-64 overflow-y-auto border rounded-md p-2">
               {allExercises.map((group) => (
@@ -98,9 +95,7 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
                       >
                         <input
                           type="checkbox"
-                          checked={newPreset.exercises.includes(
-                            exercise,
-                          )}
+                          checked={newPreset.exercises.includes(exercise)}
                           onChange={(e) =>
                             handleExerciseToggle(exercise, e.target.checked)
                           }
@@ -121,9 +116,7 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
           </Button>
           <Button
             onClick={handleCreate}
-            disabled={
-              !newPreset.presetName || newPreset.exercises.length === 0
-            }
+            disabled={!newPreset.presetName || newPreset.exercises.length === 0}
           >
             Создать
           </Button>

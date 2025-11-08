@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect } from "react";
-import { AddExercise } from "../../features/addExercise";
-import { ExerciseCard } from "../../features/exercise";
-import { useCalendarStore } from "../../entities/calendarDay";
+import { AddExercise } from "@/features/addExercise";
+import { ExerciseCard } from "@/features/exercise";
+import { useCalendarStore } from "@/entities/calendarDay";
 import style from "./ExerciseList.module.css";
 
 export const ExerciseList = () => {
@@ -36,7 +36,7 @@ export const ExerciseList = () => {
             </motion.div>
           ))}
         </AnimatePresence>
-        <div className={"mb-16"}></div>
+        <div className={"mb-26"}></div>
       </div>
       <div className={style.footer}>
         <div>

@@ -3,11 +3,13 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    visualizer(),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["logo.svg"],
@@ -114,6 +116,29 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@/ui": path.resolve(__dirname, "./src/shared/ui"),
+    },
+  },
+  build: {
+    rolldownOptions: {
+      output: {
+        // ⬇️ вместо manualChunks используем advancedChunks
+        advancedChunks: {
+          groups: [
+            // React в отдельный бандл
+            { name: "react", test: /node_modules\/react(|-dom)\// },
+
+            // Radix/shadcn
+            { name: "radix", test: /node_modules\/@radix-ui\// },
+
+            // Графики (пример)
+            { name: "recharts", test: /node_modules\/recharts\// },
+            { name: "motion", test: /node_modules\/framer-motion\// },
+
+            // Ваши тяжёлые внутренние виджеты
+            { name: "widgets", test: /src\/shared\/ui\/widgets\// },
+          ],
+        },
+      },
     },
   },
 });

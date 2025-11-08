@@ -1,32 +1,25 @@
-import type { CSSProperties } from "@mui/material";
-import Button from "@mui/material/Button";
 import type { MouseEventHandler, ReactNode } from "react";
+import { Button } from "../shadCNComponents/ui/button.tsx";
+import { twMerge } from "tailwind-merge";
 
 interface CustomButtonProps {
   buttonHandler: (event?: MouseEventHandler<HTMLButtonElement>) => void;
   children?: ReactNode;
-  classes?: CSSProperties;
+  classes?: string;
 }
 
 export const CustomButton = ({
   buttonHandler,
   children,
-  classes = {},
+  classes,
 }: CustomButtonProps) => {
   return (
     <Button
       onClick={() => buttonHandler()}
-      sx={[
-        {
-          color: "black",
-          padding: "5px 5px",
-          borderColor: "black",
-          fontFamily: "'Roboto Condensed', sans-serif",
-        },
+      className={twMerge(
         classes,
-      ]}
-      variant="outlined"
-      size="large"
+        "text-black, p-1 bg-transparent border-1 border-black",
+      )}
     >
       {children}
     </Button>

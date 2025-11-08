@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from "react";
-import { Input } from "@/components/ui/input";
+import { Input } from "../../../shared/ui/shadCNComponents/ui/input";
+import { CircularCountdown } from "../../../shared/ui/circularProgressBar/circularProgressBar.tsx";
 
 export const Timer = () => {
   const [minutes, setMinutes] = useState(2);
@@ -8,6 +9,25 @@ export const Timer = () => {
   const [initialSeconds, setInitialSeconds] = useState(seconds);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const playNotificationSound = () => {
+    const audioContext = new window.AudioContext();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 800;
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      audioContext.currentTime + 1,
+    );
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 1);
+  };
 
   const formatTime = (number: number): string => {
     return number.toString().padStart(2, "0");
@@ -67,18 +87,31 @@ export const Timer = () => {
   }, []);
 
   useEffect(() => {
-    if (minutes === 0 && seconds === 0) {
+    if (minutes === 0 && seconds === 0 && isRunning) {
+      playNotificationSound();
       clearTimer();
       setIsRunning(false);
     }
   }, [minutes, seconds]);
 
   return (
-    <div className="flex flex-col items-center space-y-3 mt-4">
-      <div className="flex flex-col items-center  text-9xl text-center">
-        <div className="flex flex-col items-center space-y-3">
+    <div className="flex flex-col items-center">
+      <div className="relative ">
+        <CircularCountdown
+          size={380}
+          totalSeconds={initialMinutes * 60 + initialSeconds}
+          currentSeconds={minutes * 60 + seconds}
+          color={isRunning ? "black" : "#6b7280"}
+        />
+        <div
+          className={
+            "absolute inset-0 flex flex-col items-center justify-center"
+          }
+        >
           <Input
-            className={`text-9xl md:text-9xl h-35 w-50  border-none shadow-none font-light text-center transition-[font-weight] duration-500 ${isRunning && "font-bold"}`}
+            className={`text-8xl disabled:opacity-100 min-[330px]:text-9xl h-auto w-auto border-none shadow-none font-light text-center transition-[font-weight,color] duration-500 ${
+              isRunning ? "font-bold text-black" : "text-gray-500"
+            }`}
             onChange={(e) =>
               setTime(parseInt(e.target.value) || 0, initialSeconds)
             }
@@ -86,7 +119,9 @@ export const Timer = () => {
             value={formatTime(minutes)}
           />
           <Input
-            className={`text-9xl md:text-9xl h-35 w-50 border-none shadow-none font-light text-center transition-[font-weight] duration-500 ${isRunning && "font-bold"}`}
+            className={`text-8xl disabled:opacity-100 min-[330px]:text-9xl h-auto w-auto border-none shadow-none font-light text-center transition-[font-weight,color] duration-500 ${
+              isRunning ? "font-bold text-black" : "text-gray-500"
+            }`}
             onChange={(e) =>
               setTime(initialMinutes, parseInt(e.target.value) || 0)
             }
@@ -95,7 +130,6 @@ export const Timer = () => {
           />
         </div>
       </div>
-
       <div className="flex flex-col w-[50%] space-y-4 fixed bottom-5">
         <button
           onClick={startTimer}
