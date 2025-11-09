@@ -1,6 +1,6 @@
 import type { PanInfo } from "motion";
 import { AnimatePresence } from "motion/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import { useCalendarStore } from "@/entities/calendarDay";
 import { type Exercise, useExerciseStore } from "@/entities/exercise";
@@ -16,16 +16,30 @@ interface ExerciseCardProps {
 export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
   const [isEditable, setIsEditable] = useState(false);
   const [popupVisibility, setPopupVisibility] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+
   const setExerciseName = useCalendarStore((store) => store.setExerciseName);
   const deleteExercise = useCalendarStore((store) => store.deleteExercise);
   const allExercises = useExerciseStore((store) => store.exercises);
 
+  // 🧠 1. Проверяем, был ли уже показан hint
+  useEffect(() => {
+    const hintShown = localStorage.getItem("exerciseSwipeHintShown");
+    if (!hintShown) {
+      setShowHint(true);
+      // Сохраняем флаг, чтобы больше не показывать
+      localStorage.setItem("exerciseSwipeHintShown", "true");
+    }
+  }, []);
+
+  // 🧩 2. Функция удаления
   const cardDragHandler = (info: PanInfo) => {
     if (info.offset.x < -180) {
       deleteExercise(exercise);
     }
   };
 
+  // ⚙️ 3. Обработка изменения названия упражнения
   const inputChangeHandler = (name: string) => {
     const category = allExercises.find((group) =>
       group.exercises.includes(name),
@@ -37,14 +51,18 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
   };
 
   return (
-    <div className={"w-screen"}>
+    <div className="w-screen overflow-hidden">
       <motion.div
         drag="x"
         onDragEnd={(_, info) => cardDragHandler(info)}
         dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
         dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
         dragElastic={0.3}
-        className={"w-[calc(100dvw+50px)] flex justify-start gap-10"}
+        className="w-[calc(100dvw+50px)] flex justify-start gap-10"
+        // 🎬 4. Подсказка: первый раз карточка “уезжает” влево и возвращается
+        initial={showHint ? { x: 0 } : false}
+        animate={showHint ? { x: [-0, -80, 0] } : { x: 0 }}
+        transition={showHint ? { duration: 1.2, ease: "easeInOut" } : undefined}
       >
         <div className={style.card}>
           <div
@@ -94,7 +112,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
             )}
           </AnimatePresence>
         </div>
-        <div className={"flex justify-center items-center"}>
+        <div className="flex justify-center items-center">
           <Trash2 className="text-red-500" />
         </div>
       </motion.div>
