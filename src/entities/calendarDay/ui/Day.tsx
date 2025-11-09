@@ -1,7 +1,6 @@
 import dayjs, { Dayjs } from "dayjs";
 import { Dot } from "lucide-react";
-import { firstLetterToUpperCase } from "@/shared/utilities";
-import { cn } from "@/shared/utilities";
+import { cn, firstLetterToUpperCase } from "@/shared/lib";
 import styles from "./Day.module.css";
 
 // import {} from "@/";

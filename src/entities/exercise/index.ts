@@ -3,4 +3,5 @@ export type {
   ExerciseSet,
   ExerciseCategory,
   TrainingPreset,
-} from "./model/types.ts";
+} from "./model/types";
+export { useExerciseStore } from "./slice/exerciseStore";

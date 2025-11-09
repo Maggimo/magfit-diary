@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useUserStore } from "../../entities/user/slice/userStore.ts";
-import { refreshTokensRequest } from "./userApi.ts";
+import { useUserStore } from "@/entities/user/slice/userStore";
+import { refreshTokensRequest } from "@/entities/user/api/userApi";
 
 export const $api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,

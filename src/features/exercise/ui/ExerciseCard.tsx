@@ -1,29 +1,13 @@
 import type { PanInfo } from "motion";
 import { AnimatePresence } from "motion/react";
 import { useState } from "react";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../../../shared/ui/shadCNComponents/ui/command.tsx";
-import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
-import { useCalendarStore } from "../../../entities/calendarDay";
-import { allExercises } from "../../../shared/utilities";
-import { ExerciseBody } from "./ExerciseBody.tsx";
-import style from "./ExerciseCard.module.css";
-import type { Exercise } from "../../../entities/exercise";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../../shared/ui/shadCNComponents/ui/popover.tsx";
+import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { useCalendarStore } from "@/entities/calendarDay";
+import { type Exercise, useExerciseStore } from "@/entities/exercise";
 import * as motion from "motion/react-client";
-import { Button } from "../../../shared/ui/shadCNComponents/ui/button.tsx";
-
-export type ExerciseOption = { group: string; name: string };
+import { ExerciseBody } from "./ExerciseBody";
+import { ExerciseNameSelector } from "./ExerciseNameSelector";
+import style from "./ExerciseCard.module.css";
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -31,9 +15,10 @@ interface ExerciseCardProps {
 
 export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
   const [isEditable, setIsEditable] = useState(false);
-  const setExerciseName = useCalendarStore((store) => store.setExerciseName);
   const [popupVisibility, setPopupVisibility] = useState(false);
+  const setExerciseName = useCalendarStore((store) => store.setExerciseName);
   const deleteExercise = useCalendarStore((store) => store.deleteExercise);
+  const allExercises = useExerciseStore((store) => store.exercises);
 
   const cardDragHandler = (info: PanInfo) => {
     if (info.offset.x < -180) {
@@ -42,15 +27,13 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
   };
 
   const inputChangeHandler = (name: string) => {
-    setExerciseName(
-      {
-        name,
-        group: allExercises.find((group) => group.exercises.includes(name))!
-          .category,
-      },
-      exercise,
-    );
-    setPopupVisibility(false);
+    const category = allExercises.find((group) =>
+      group.exercises.includes(name),
+    )?.category;
+    if (category) {
+      setExerciseName({ name, group: category }, exercise);
+      setPopupVisibility(false);
+    }
   };
 
   return (
@@ -65,9 +48,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
       >
         <div className={style.card}>
           <div
-            onClick={() => {
-              setIsEditable((p) => !p);
-            }}
+            onClick={() => setIsEditable((p) => !p)}
             className={style.cardHead}
           >
             <div className={style.info}>
@@ -86,51 +67,16 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
                 }}
                 className={style.exerciseName}
               >
-                <Popover
+                <ExerciseNameSelector
+                  allExercises={allExercises}
+                  exerciseName={exercise.name}
+                  isEditable={isEditable}
                   open={popupVisibility}
                   onOpenChange={setPopupVisibility}
-                >
-                  <PopoverTrigger asChild>
-                    <Button
-                      disabled={!isEditable}
-                      variant="ghost"
-                      role="combobox"
-                      aria-expanded={popupVisibility}
-                      className=" w-[150px] sm:w-[200px] justify-between text-md"
-                    >
-                      {exercise.name || "Выберите упражнение"}
-                      {isEditable && <Pencil className="opacity-50" />}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className=" p-0">
-                    <Command className={""}>
-                      <CommandInput placeholder="Поиск упражнения" />
-                      <CommandList>
-                        <CommandEmpty>Упражнение не найдено</CommandEmpty>
-                        {allExercises.map((element) => {
-                          return (
-                            <CommandGroup
-                              heading={element.category}
-                              key={element.category}
-                            >
-                              {element.exercises.map((exerciseName) => (
-                                <CommandItem
-                                  onSelect={inputChangeHandler}
-                                  key={exerciseName}
-                                >
-                                  {exerciseName}
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          );
-                        })}
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+                  onSelect={inputChangeHandler}
+                />
               </div>
             </div>
-
             <div>{isEditable ? <ChevronUp /> : <ChevronDown />}</div>
           </div>
           <AnimatePresence>

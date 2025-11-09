@@ -2,11 +2,11 @@ import { X } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-client";
 import { type ChangeEvent } from "react";
-import { Input } from "../../../shared/ui/shadCNComponents/ui/input.tsx";
-import { Button } from "../../../shared/ui/shadCNComponents/ui/button.tsx";
-import { useCalendarStore } from "../../../entities/calendarDay";
-import type { Exercise, ExerciseSet } from "../../../entities/exercise";
-import { StatisticCard } from "../../../widgets/statisticCard/ui/statisticCard.tsx";
+import { Input } from "@/shared/ui/shadCNComponents/ui/input";
+import { Button } from "@/shared/ui/shadCNComponents/ui/button";
+import { useCalendarStore } from "@/entities/calendarDay";
+import type { Exercise, ExerciseSet } from "@/entities/exercise";
+import { StatisticCard } from "@/widgets/statisticCard";
 import style from "./ExerciseCard.module.css";
 import { CustomButton } from "@/shared/ui";
 

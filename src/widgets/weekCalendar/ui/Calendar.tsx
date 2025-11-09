@@ -12,7 +12,7 @@ import { MonthSwiper } from "@/features/monthSwiper";
 import { WeekSwiper } from "@/features/weekSwiper";
 import styles from "./WeekCalendar.module.css";
 
-dayjs.extend(isoWeek); // 👉 Неделя начинается с понедельника
+dayjs.extend(isoWeek);
 dayjs.locale("ru");
 
 export const WeekSlider = () => {

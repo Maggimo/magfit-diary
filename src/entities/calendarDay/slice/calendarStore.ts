@@ -1,9 +1,15 @@
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { create } from "zustand";
-import type { ExerciseOption } from "../../../features/exercise/ui/ExerciseCard.tsx";
-import type { Exercise, ExerciseSet } from "../../exercise";
-import type { CalendarDay } from "../model/types.ts";
+import type { ExerciseOption } from "@/features/exercise";
+import type { Exercise, ExerciseSet } from "@/entities/exercise";
+import type { CalendarDay } from "../model/types";
+import { getDaysFromLocalStorage } from "@/shared/lib/storage";
+import {
+  generateExercise,
+  getDateKeyAndOldExercises,
+  replaceExercises,
+} from "../lib/exerciseHelpers";
 
 dayjs.locale("ru");
 
@@ -30,75 +36,6 @@ interface CalendarStore {
   deleteSet: (exercise: Exercise, exerciseSet: ExerciseSet) => void;
 }
 
-const getDaysFromLocalStorage = (date: dayjs.Dayjs) => {
-  const prevDate = dayjs(date.add(-1, "month"));
-  const prevDateKey = prevDate.format("MM-YYYY");
-  const prevDays = JSON.parse(localStorage.getItem(prevDateKey) ?? "{}");
-  const nextDate = dayjs(date.add(1, "month"));
-  const nextDateKey = nextDate.format("MM-YYYY");
-  const nextDays = JSON.parse(localStorage.getItem(nextDateKey) ?? "{}");
-  const currentDateKey = date.format("MM-YYYY");
-  const currentDays = JSON.parse(localStorage.getItem(currentDateKey) ?? "{}");
-  return {
-    ...prevDays,
-    ...currentDays,
-    ...nextDays,
-  };
-};
-
-const generateExercise = (name: string, group: string) => {
-  return {
-    sets: [
-      {
-        weight: 0,
-        reps: 0,
-        id: crypto.randomUUID(),
-      },
-    ],
-    id: crypto.randomUUID(),
-    category: group,
-    name: name,
-  };
-};
-
-const saveDaysToLocalStorage = (
-  date: dayjs.Dayjs,
-  newDays: Record<string, CalendarDay>,
-) => {
-  let daysToSave = {};
-  for (const key in newDays) {
-    if (key.includes(date.format("MM-YYYY"))) {
-      daysToSave = {
-        ...daysToSave,
-        [key]: newDays[key],
-      };
-    }
-  }
-  localStorage.setItem(date.format("MM-YYYY"), JSON.stringify(daysToSave));
-};
-
-const getDateKeyAndOldExercises = (state: CalendarStore) => {
-  const dateKey = state.selectedDate.format("DD-MM-YYYY");
-  const oldExercises = state.days[dateKey]?.exercises ?? [];
-  return { dateKey, oldExercises };
-};
-
-const replaceExercises = (
-  state: CalendarStore,
-  dateKey: string,
-  newExercises: Exercise[],
-) => {
-  const newDays = {
-    ...state.days,
-    [dateKey]: {
-      ...state.days[dateKey],
-      exercises: newExercises,
-    },
-  };
-  saveDaysToLocalStorage(state.selectedDate, newDays);
-  return newDays;
-};
-
 export const useCalendarStore = create<CalendarStore>()((set) => ({
   days: {},
   selectedDate: dayjs(),
@@ -110,25 +47,31 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
   loadDaysFromLocalStorage: (date) =>
     set(() => {
       const days = getDaysFromLocalStorage(date);
-      return {
-        days: days,
-      };
+      return { days };
     }),
 
   addExercise: (name, group) =>
     set((state) => {
-      const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
+      const { dateKey, oldExercises } = getDateKeyAndOldExercises(
+        state.selectedDate,
+        state.days,
+      );
       oldExercises.push(generateExercise(name, group));
-      const newDays = replaceExercises(state, dateKey, oldExercises);
-
-      return {
-        days: newDays,
-      };
+      const newDays = replaceExercises(
+        state.selectedDate,
+        state.days,
+        dateKey,
+        oldExercises,
+      );
+      return { days: newDays };
     }),
 
   setExerciseName: (exerciseParams, exercise) =>
     set((state) => {
-      const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
+      const { dateKey, oldExercises } = getDateKeyAndOldExercises(
+        state.selectedDate,
+        state.days,
+      );
       const newExercises = oldExercises.map((ex) => {
         if (ex.id !== exercise.id) return ex;
         return {
@@ -137,15 +80,21 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
           category: exerciseParams!.group as string,
         };
       });
-      const newDays = replaceExercises(state, dateKey, newExercises);
-      return {
-        days: newDays,
-      };
+      const newDays = replaceExercises(
+        state.selectedDate,
+        state.days,
+        dateKey,
+        newExercises,
+      );
+      return { days: newDays };
     }),
 
   setExerciseValues: (value, type, id, exercise) =>
     set((state) => {
-      const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
+      const { dateKey, oldExercises } = getDateKeyAndOldExercises(
+        state.selectedDate,
+        state.days,
+      );
       const newExercises = oldExercises.map((ex) => {
         if (ex.id !== exercise.id) return ex;
         return {
@@ -155,15 +104,21 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
           ),
         };
       });
-      const newDays = replaceExercises(state, dateKey, newExercises);
-      return {
-        days: newDays,
-      };
+      const newDays = replaceExercises(
+        state.selectedDate,
+        state.days,
+        dateKey,
+        newExercises,
+      );
+      return { days: newDays };
     }),
 
   addSetToExercise: (exercise) =>
     set((state) => {
-      const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
+      const { dateKey, oldExercises } = getDateKeyAndOldExercises(
+        state.selectedDate,
+        state.days,
+      );
       const lastSet = exercise.sets[exercise.sets.length - 1] ?? {
         id: 0,
         weight: 0,
@@ -183,26 +138,37 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
           ],
         };
       });
-      const newDays = replaceExercises(state, dateKey, newExercises);
-      return {
-        days: newDays,
-      };
+      const newDays = replaceExercises(
+        state.selectedDate,
+        state.days,
+        dateKey,
+        newExercises,
+      );
+      return { days: newDays };
     }),
 
   deleteExercise: (exercise) =>
     set((state) => {
-      const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
+      const { dateKey, oldExercises } = getDateKeyAndOldExercises(
+        state.selectedDate,
+        state.days,
+      );
       const newExercises = oldExercises.filter((ex) => ex.id !== exercise.id);
-
-      const newDays = replaceExercises(state, dateKey, newExercises);
-      return {
-        days: newDays,
-      };
+      const newDays = replaceExercises(
+        state.selectedDate,
+        state.days,
+        dateKey,
+        newExercises,
+      );
+      return { days: newDays };
     }),
 
   deleteSet: (exercise, exerciseSet) =>
     set((state) => {
-      const { dateKey, oldExercises } = getDateKeyAndOldExercises(state);
+      const { dateKey, oldExercises } = getDateKeyAndOldExercises(
+        state.selectedDate,
+        state.days,
+      );
       const newExercises = oldExercises.map((ex) => {
         if (ex.id !== exercise.id) return ex;
         return {
@@ -210,10 +176,12 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
           sets: ex.sets.filter((set) => set.id !== exerciseSet.id),
         };
       });
-
-      const newDays = replaceExercises(state, dateKey, newExercises);
-      return {
-        days: newDays,
-      };
+      const newDays = replaceExercises(
+        state.selectedDate,
+        state.days,
+        dateKey,
+        newExercises,
+      );
+      return { days: newDays };
     }),
 }));

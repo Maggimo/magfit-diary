@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Button } from "../../../shared/ui/shadCNComponents/ui/button.tsx";
 import { Dumbbell, Zap } from "lucide-react";
-import { CreateExercise } from "@/features/createExercise";
-import { CreatePreset } from "@/features/createPreset";
+import { Button } from "@/shared/ui/shadCNComponents/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../../../shared/ui/shadCNComponents/ui/popover";
-import { FullExerciseCommand } from "../../../features/fullExerciseList/ui/fullExerciseCommand.tsx";
+} from "@/shared/ui/shadCNComponents/ui/popover";
+import { CreateExercise } from "@/features/createExercise";
+import { CreatePreset } from "@/features/createPreset";
+import { FullExerciseCommand } from "@/features/fullExerciseList/ui/fullExerciseCommand";
 
 export const AllExercises = () => {
   // States for add functionality
@@ -20,7 +20,7 @@ export const AllExercises = () => {
     <div className="h-[calc(100dvh-64px)] max-[330px]:h-[calc(100dvh-54px)]">
       <div className="h-full grid grid-rows-[85%_15%]]">
         <div className={"overflow-scroll"}>
-          <FullExerciseCommand checkable={false} />
+          <FullExerciseCommand checkable={false} deletable={true} />
         </div>
         {/* Кнопка добавления */}
         <div className={"flex justify-center items-center"}>

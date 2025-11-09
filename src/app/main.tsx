@@ -1,21 +1,10 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./styles/index.css";
-import { AppRoutes } from "./routes.tsx";
+import { AppRoutes } from "./router/routes.tsx";
+import { registerServiceWorker } from "./providers/pwa/register.ts";
 
-// @ts-ignore
-import { registerSW } from "virtual:pwa-register";
-
-registerSW({
-  onNeedRefresh() {
-    if (confirm("Обновить приложение до новой версии?")) {
-      window.location.reload();
-    }
-  },
-  onOfflineReady() {
-    console.log("PWA готово к офлайн-работе 💪");
-  },
-});
+registerServiceWorker();
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

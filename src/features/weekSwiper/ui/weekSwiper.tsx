@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import { Swiper } from "swiper/react";
-import { daysRender } from "@/shared/utilities";
 import type { daysArray } from "@/entities/calendarDay";
+import { daysRender } from "@/shared/lib";
 import { generateWeek, PRELOAD_WEEKS } from "../lib";
 
 interface WeekSwiperProps {

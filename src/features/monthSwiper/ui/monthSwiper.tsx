@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import { Swiper } from "swiper/react";
 import type { daysArray } from "@/entities/calendarDay";
-import { daysRender } from "@/shared/utilities";
+import { daysRender } from "@/shared/lib";
 import { PRELOAD_MONTHS, generateMonth } from "../lib";
 
 interface MonthSwiperProps {

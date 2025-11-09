@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "../../../shared/ui/shadCNComponents/ui/button";
+import { Button } from "@/shared/ui/shadCNComponents/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,10 +7,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../../../shared/ui/shadCNComponents/ui/dialog";
-import { Input } from "../../../shared/ui/shadCNComponents/ui/input";
-import { allExercises } from "@/shared/utilities/const.ts";
-import { useExerciseStore } from "../../../entities/exercise/slice/exerciseStore.ts";
+} from "@/shared/ui/shadCNComponents/ui/dialog";
+import { Input } from "@/shared/ui/shadCNComponents/ui/input";
+import { useExerciseStore } from "@/entities/exercise";
 import type { NewPreset } from "../model/types";
 
 interface CreatePresetProps {
@@ -23,7 +22,8 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
     presetName: "",
     exercises: [],
   });
-
+  
+  const allExercises = useExerciseStore((state) => state.exercises);
   const createTrainingPreset = useExerciseStore(
     (state) => state.createTrainingPreset,
   );

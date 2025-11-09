@@ -1,12 +1,12 @@
 import { Menu, ScrollText, Timer as TimerIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../../shared/ui/shadCNComponents/ui/button.tsx";
+import { Button } from "@/shared/ui/shadCNComponents/ui/button.tsx";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../../../shared/ui/shadCNComponents/ui/popover.tsx";
-import { Separator } from "../../../shared/ui/shadCNComponents/ui/separator.tsx";
+} from "@/shared/ui/shadCNComponents/ui/popover.tsx";
+import { Separator } from "@/shared/ui/shadCNComponents/ui/separator.tsx";
 
 export const ProfileDropDownMenu = () => {
   const navigate = useNavigate();
