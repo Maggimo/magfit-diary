@@ -72,7 +72,7 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
         state.selectedDate,
         state.days,
       );
-      const newExercises = oldExercises.map((ex) => {
+      const newExercises = oldExercises.map((ex: Exercise) => {
         if (ex.id !== exercise.id) return ex;
         return {
           ...ex,
@@ -95,11 +95,11 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
         state.selectedDate,
         state.days,
       );
-      const newExercises = oldExercises.map((ex) => {
+      const newExercises = oldExercises.map((ex: Exercise) => {
         if (ex.id !== exercise.id) return ex;
         return {
           ...ex,
-          sets: ex.sets.map((set) =>
+          sets: ex.sets.map((set: ExerciseSet) =>
             set.id === id ? { ...set, [type]: Number(value) } : set,
           ),
         };
@@ -124,7 +124,7 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
         weight: 0,
         reps: 0,
       };
-      const newExercises = oldExercises.map((ex) => {
+      const newExercises = oldExercises.map((ex: Exercise) => {
         if (ex.id !== exercise.id) return ex;
         return {
           ...ex,
@@ -153,7 +153,7 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
         state.selectedDate,
         state.days,
       );
-      const newExercises = oldExercises.filter((ex) => ex.id !== exercise.id);
+      const newExercises = oldExercises.filter((ex: Exercise) => ex.id !== exercise.id);
       const newDays = replaceExercises(
         state.selectedDate,
         state.days,
