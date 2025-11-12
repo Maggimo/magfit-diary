@@ -1,11 +1,17 @@
 import type { ExerciseCategory, TrainingPreset } from "@/entities/exercise";
+import type { RgbaColor } from "react-colorful";
 
 export const submitExercises = (
   selectedExerciseCheckboxes: string[],
   selectedPresetCheckboxes: string[],
   allExercises: ExerciseCategory[],
   trainingPreset: TrainingPreset[],
-  addExercise: (name: string, category: string) => void,
+  addExercise: (
+    name: string,
+    group: string,
+    presetName?: string,
+    presetColor?: RgbaColor,
+  ) => void,
 ) => {
   selectedExerciseCheckboxes.forEach((exercise) => {
     const category = allExercises.find((group) =>
@@ -26,10 +32,14 @@ export const submitExercises = (
           group.exercises.includes(exercise),
         )?.category;
         if (category) {
-          addExercise(exercise, category);
+          addExercise(
+            exercise,
+            category,
+            preset.presetName,
+            preset.presetColor,
+          );
         }
       });
     }
   });
 };
-

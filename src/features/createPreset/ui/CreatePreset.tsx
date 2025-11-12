@@ -1,3 +1,4 @@
+import { Pipette } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/shared/ui/shadCNComponents/ui/button";
 import {
@@ -9,7 +10,13 @@ import {
   DialogTitle,
 } from "@/shared/ui/shadCNComponents/ui/dialog";
 import { Input } from "@/shared/ui/shadCNComponents/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/shared/ui/shadCNComponents/ui/popover.tsx";
 import { useExerciseStore } from "@/entities/exercise";
+import { type RgbaColor, RgbaColorPicker } from "react-colorful";
 import type { NewPreset } from "../model/types";
 
 interface CreatePresetProps {
@@ -21,16 +28,25 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
   const [newPreset, setNewPreset] = useState<NewPreset>({
     presetName: "",
     exercises: [],
+    presetColor: { r: 0, g: 0, b: 0, a: 1 },
   });
-  
+
   const allExercises = useExerciseStore((state) => state.exercises);
   const createTrainingPreset = useExerciseStore(
     (state) => state.createTrainingPreset,
   );
 
+  const handleColorPicker = (newColor: RgbaColor) => {
+    setNewPreset({ ...newPreset, presetColor: newColor });
+  };
+
   const handleClose = () => {
     onOpenChange(false);
-    setNewPreset({ presetName: "", exercises: [] });
+    setNewPreset({
+      presetName: "",
+      exercises: [],
+      presetColor: { r: 0, g: 0, b: 0, a: 1 },
+    });
   };
 
   const handleCreate = () => {
@@ -65,18 +81,41 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <label htmlFor="preset-name" className="text-sm font-medium">
-              Название пресета
-            </label>
-            <Input
-              id="preset-name"
-              placeholder="Например: Грудь и трицепс"
-              value={newPreset.presetName}
-              onChange={(e) =>
-                setNewPreset({ ...newPreset, presetName: e.target.value })
-              }
-            />
+          <div className={"flex justify-between gap-2 w-full items-end"}>
+            <div className="space-y-2 w-[90%]">
+              <label htmlFor="preset-name" className="text-sm font-medium">
+                Название пресета
+              </label>
+              <Input
+                id="preset-name"
+                placeholder="Например: Грудь и трицепс"
+                value={newPreset.presetName}
+                onChange={(e) =>
+                  setNewPreset({ ...newPreset, presetName: e.target.value })
+                }
+              />
+            </div>
+            <div className={"w-[10%]"}>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    style={{
+                      backgroundColor: `rgba(${newPreset.presetColor.r},${newPreset.presetColor.g},${newPreset.presetColor.b},${
+                        newPreset.presetColor.a === 1
+                          ? 0.8
+                          : newPreset.presetColor.a
+                      })`,
+                    }}
+                    variant="outline"
+                  >
+                    <Pipette />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full border-2 border-black rounded-md p-2">
+                  <RgbaColorPicker onChange={handleColorPicker} />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
 
           <div className="space-y-2 max-[330px]:h-30 overflow-hidden">

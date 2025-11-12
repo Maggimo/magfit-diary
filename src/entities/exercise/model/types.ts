@@ -1,3 +1,5 @@
+import type { RgbaColor } from "react-colorful";
+
 export interface ExerciseSet {
   id: string;
   weight: number;
@@ -9,6 +11,8 @@ export interface Exercise {
   name: string;
   category: string;
   sets: ExerciseSet[];
+  presetName?: string;
+  presetColor?: RgbaColor;
 }
 
 export interface ExerciseCategory {
@@ -19,4 +23,5 @@ export interface ExerciseCategory {
 export interface TrainingPreset {
   presetName: string;
   exercises: string[];
+  presetColor: RgbaColor;
 }

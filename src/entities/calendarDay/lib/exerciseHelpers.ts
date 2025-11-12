@@ -1,9 +1,15 @@
 import type { Exercise } from "@/entities/exercise";
+import type { RgbaColor } from "react-colorful";
 import type { CalendarDay } from "../model/types";
 import { saveDaysToLocalStorage } from "@/shared/lib/storage";
 import dayjs from "dayjs";
 
-export const generateExercise = (name: string, group: string): Exercise => {
+export const generateExercise = (
+  name: string,
+  group: string,
+  presetName?: string,
+  presetColor?: RgbaColor,
+): Exercise => {
   return {
     sets: [
       {
@@ -15,6 +21,8 @@ export const generateExercise = (name: string, group: string): Exercise => {
     id: crypto.randomUUID(),
     category: group,
     name: name,
+    presetColor: presetColor,
+    presetName: presetName,
   };
 };
 

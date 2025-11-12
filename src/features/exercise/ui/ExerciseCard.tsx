@@ -50,6 +50,8 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
     }
   };
 
+  const exerciseColor = `rgba(${exercise.presetColor?.r},${exercise.presetColor?.g},${exercise.presetColor?.b},${exercise.presetColor?.a}`;
+
   return (
     <div className="w-screen overflow-hidden">
       <motion.div
@@ -59,12 +61,11 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
         dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
         dragElastic={0.3}
         className="w-[calc(100dvw+50px)] flex justify-start gap-10"
-        // 🎬 4. Подсказка: первый раз карточка “уезжает” влево и возвращается
         initial={showHint ? { x: 0 } : false}
         animate={showHint ? { x: [-0, -80, 0] } : { x: 0 }}
         transition={showHint ? { duration: 1.2, ease: "easeInOut" } : undefined}
       >
-        <div className={style.card}>
+        <div style={{ borderColor: exerciseColor }} className={style.card}>
           <div
             onClick={() => setIsEditable((p) => !p)}
             className={style.cardHead}
@@ -85,6 +86,14 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
                 }}
                 className={style.exerciseName}
               >
+                {exercise.presetName && (
+                  <div
+                    style={{ color: exerciseColor }}
+                    className={style.presetName}
+                  >
+                    Пресет: {exercise.presetName}
+                  </div>
+                )}
                 <ExerciseNameSelector
                   allExercises={allExercises}
                   exerciseName={exercise.name}

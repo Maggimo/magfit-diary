@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
+import type { RgbaColor } from "react-colorful";
 import { create } from "zustand";
 import type { ExerciseOption } from "@/features/exercise";
 import type { Exercise, ExerciseSet } from "@/entities/exercise";
@@ -20,7 +21,12 @@ interface CalendarStore {
   observableDate: dayjs.Dayjs;
   setObservableDate: (date: dayjs.Dayjs) => void;
   loadDaysFromLocalStorage: (date: dayjs.Dayjs) => void;
-  addExercise: (name: string, group: string) => void;
+  addExercise: (
+    name: string,
+    group: string,
+    presetName?: string,
+    presetColor?: RgbaColor,
+  ) => void;
   setExerciseName: (
     exerciseParams: ExerciseOption | null,
     exercise: Exercise,
@@ -50,13 +56,13 @@ export const useCalendarStore = create<CalendarStore>()((set) => ({
       return { days };
     }),
 
-  addExercise: (name, group) =>
+  addExercise: (name, group, presetName?, presetColor?) =>
     set((state) => {
       const { dateKey, oldExercises } = getDateKeyAndOldExercises(
         state.selectedDate,
         state.days,
       );
-      oldExercises.push(generateExercise(name, group));
+      oldExercises.push(generateExercise(name, group, presetName, presetColor));
       const newDays = replaceExercises(
         state.selectedDate,
         state.days,

@@ -38,6 +38,7 @@ export const trainingPreset = [
       "Подъём гантели стоя",
       "Молотки",
     ],
+    presetColor: { r: 255, g: 165, b: 0, a: 0.5 },
   },
   {
     presetName: "Спина и трицепс",
@@ -47,9 +48,11 @@ export const trainingPreset = [
       "Подъём гантели стоя",
       "Молотки",
     ],
+    presetColor: { r: 255, g: 165, b: 0, a: 0.5 },
   },
   {
     presetName: "Ноги и плечи",
     exercises: ["Приседания", "Жим ногами", "Махи в сторону", "Армейский жим"],
+    presetColor: { r: 255, g: 165, b: 0, a: 0.5 },
   },
 ];
