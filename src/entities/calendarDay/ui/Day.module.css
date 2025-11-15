@@ -31,7 +31,7 @@
 
 .selectedDay {
 		composes: dayNumber;
-		background-color: rgba(46, 43, 46, 0.41);
+		background: rgba(23, 23, 23, 0.42);
 		color: #ffffff;
 		border: 2px solid black;
 }

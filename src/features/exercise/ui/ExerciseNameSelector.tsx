@@ -1,19 +1,14 @@
 import { Pencil } from "lucide-react";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/shared/ui/shadCNComponents/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shared/ui/shadCNComponents/ui/popover";
 import { Button } from "@/shared/ui/shadCNComponents/ui/button";
 import { type ExerciseCategory } from "@/entities/exercise";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/shared/ui/shadCNComponents/ui/dialog.tsx";
+import { useState } from "react";
+import { FullExerciseCommand } from "../../fullExerciseList";
 
 interface ExerciseNameSelectorProps {
   exerciseName: string;
@@ -30,39 +25,53 @@ export const ExerciseNameSelector = ({
   open,
   onOpenChange,
   onSelect,
-  allExercises,
 }: ExerciseNameSelectorProps) => {
+  const [selectedExercise, setSelectedExercise] = useState("");
+
   return (
-    <Popover open={open} onOpenChange={onOpenChange}>
-      <PopoverTrigger asChild>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
         <Button
           disabled={!isEditable}
           variant="ghost"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[150px] sm:w-[200px] justify-between text-md"
+          className="justify-between text-md overflow-hidden max-w-[150px] min-[330px]:max-w-[200px]"
         >
-          {exerciseName || "Выберите упражнение"}
+          <span className={"truncate"}>
+            {exerciseName || "Выберите упражнение"}
+          </span>
           {isEditable && <Pencil className="opacity-50" />}
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="p-0">
-        <Command>
-          <CommandInput placeholder="Поиск упражнения" />
-          <CommandList>
-            <CommandEmpty>Упражнение не найдено</CommandEmpty>
-            {allExercises.map((element) => (
-              <CommandGroup heading={element.category} key={element.category}>
-                {element.exercises.map((name) => (
-                  <CommandItem onSelect={onSelect} key={name}>
-                    {name}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ))}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+      </DialogTrigger>
+      <DialogContent
+        onPointerDownOutside={(e) => {
+          if (e.target instanceof HTMLElement) {
+            const isBackDrop = e.target.dataset.radixDialogOverlay === "";
+            if (isBackDrop) onOpenChange(false);
+          }
+        }}
+        onInteractOutside={(e) => {
+          const isBackDrop =
+            (e.target as HTMLElement).dataset.radixDialogOverlay === "";
+          if (isBackDrop) onOpenChange(false);
+        }}
+        showCloseButton={false}
+        className="p-0"
+      >
+        <DialogTitle className={"text-center pt-4"}>
+          Выберите упражнение
+        </DialogTitle>
+        <div className={"max-h-[50dvh] max-w-full overflow-y-scroll"}>
+          <FullExerciseCommand
+            variant={"exercises"}
+            checkable={"radio"}
+            selectedExerciseCheckboxes={selectedExercise}
+            exerciseSelectHandler={setSelectedExercise}
+          />
+        </div>
+        <div className={"flex justify-center p-2 pt-0 border-gray-200"}>
+          <Button onClick={() => onSelect(selectedExercise)}>Выбрать</Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };

@@ -49,7 +49,7 @@ export const AddExercise = () => {
   };
 
   return (
-    <div className="h-[50px]">
+    <>
       <Drawer
         direction="right"
         open={drawerOpen}
@@ -67,8 +67,16 @@ export const AddExercise = () => {
         <DrawerContent className="grid grid-rows-[auto_1fr_auto] h-[100dvh] overflow-hidden">
           <div className="flex-shrink-0">
             <DrawerHeader>
-              <DrawerTitle className={"text-2xl"}>
+              <DrawerTitle
+                className={"text-2xl w-full flex justify-between items-center"}
+              >
                 Добавьте упражнения
+                <CreateButtons
+                  openAddPopover={openAddPopover}
+                  onOpenAddPopoverChange={setOpenAddPopover}
+                  onOpenExerciseModal={() => setOpenExerciseModal(true)}
+                  onOpenPresetModal={() => setOpenPresetModal(true)}
+                />
               </DrawerTitle>
               <DrawerDescription></DrawerDescription>
             </DrawerHeader>
@@ -79,18 +87,20 @@ export const AddExercise = () => {
               selectedPresetCheckboxes={selectedPresetCheckboxes}
               presetSelectHandler={presetSelectHandler}
               exerciseSelectHandler={exerciseSelectHandler}
-              checkable={true}
+              checkable={"checkbox"}
             />
           </div>
 
           <DrawerFooter className="w-full flex-shrink-0">
-            <CreateButtons
-              openAddPopover={openAddPopover}
-              onOpenAddPopoverChange={setOpenAddPopover}
-              onOpenExerciseModal={() => setOpenExerciseModal(true)}
-              onOpenPresetModal={() => setOpenPresetModal(true)}
-            />
-            <Button onClick={handleSubmit}>Добавить</Button>
+            <Button
+              disabled={
+                selectedExerciseCheckboxes.length === 0 &&
+                selectedPresetCheckboxes.length === 0
+              }
+              onClick={handleSubmit}
+            >
+              Добавить
+            </Button>
             <Button variant="outline" onClick={() => setDrawerOpen(false)}>
               Отмена
             </Button>
@@ -103,6 +113,6 @@ export const AddExercise = () => {
         onOpenChange={setOpenExerciseModal}
       />
       <CreatePreset open={openPresetModal} onOpenChange={setOpenPresetModal} />
-    </div>
+    </>
   );
 };

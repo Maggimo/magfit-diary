@@ -6,7 +6,7 @@ import type { TrainingPreset } from "@/entities/exercise";
 
 interface PresetItemProps {
   preset: TrainingPreset;
-  checkable: boolean;
+  checkable: "checkbox" | "radio" | false;
   deletable: boolean;
   selected: boolean;
   onSelect?: (value: string) => void;
@@ -33,7 +33,9 @@ export const PresetItem = ({
           <span className="text-base font-medium">{preset.presetName}</span>
         </div>
         <div className="flex items-center gap-2">
-          {checkable && <Checkbox value={preset.presetName} checked={selected} />}
+          {checkable && (
+            <Checkbox value={preset.presetName} checked={selected} />
+          )}
           {deletable && (
             <Button
               variant="ghost"
@@ -55,4 +57,3 @@ export const PresetItem = ({
     </CommandItem>
   );
 };
-

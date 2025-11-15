@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { Trash2, X } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-client";
 import { type ChangeEvent } from "react";
@@ -18,6 +18,7 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
   const onChangeHandler = useCalendarStore((store) => store.setExerciseValues);
   const addSetToExercise = useCalendarStore((store) => store.addSetToExercise);
   const deleteSet = useCalendarStore((store) => store.deleteSet);
+  const deleteExercise = useCalendarStore((store) => store.deleteExercise);
 
   const inputHandler = (
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -33,7 +34,7 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
     }
   };
   return (
-    <div className={"w-[100dvw]"}>
+    <>
       <AnimatePresence>
         {exercise.sets.map((set, idx) => {
           return (
@@ -92,7 +93,8 @@ export const ExerciseBody = ({ exercise }: ExerciseBodyProps) => {
         >
           Добавить подход
         </CustomButton>
+        <Trash2 color={"red"} onClick={() => deleteExercise(exercise)} />
       </div>
-    </div>
+    </>
   );
 };

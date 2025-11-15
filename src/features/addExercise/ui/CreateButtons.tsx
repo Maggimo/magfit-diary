@@ -22,9 +22,9 @@ export const CreateButtons = ({
   return (
     <Popover open={openAddPopover} onOpenChange={onOpenAddPopoverChange}>
       <PopoverTrigger asChild>
-        <Button>Создать упражнение</Button>
+        <Button className={"w-10 text-2xl"}>+</Button>
       </PopoverTrigger>
-      <PopoverContent className="w-64 p-2" align="center">
+      <PopoverContent className="w-full p2" align="center">
         <div className="flex flex-col gap-2">
           <Button
             variant="ghost"
@@ -53,4 +53,3 @@ export const CreateButtons = ({
     </Popover>
   );
 };
-

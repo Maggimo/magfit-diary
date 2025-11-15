@@ -24,6 +24,7 @@ export const CreateExercise = ({ open, onOpenChange }: CreateExerciseProps) => {
     category: "",
     name: "",
   });
+  const [error, setError] = useState<string>("");
   const createExercise = useExerciseStore((state) => state.createExercise);
   const allExercises = useExerciseStore((state) => state.exercises);
   const {
@@ -38,11 +39,24 @@ export const CreateExercise = ({ open, onOpenChange }: CreateExerciseProps) => {
   const handleClose = () => {
     onOpenChange(false);
     setNewExercise({ category: "", name: "" });
+    setError("");
     setFocused(false);
   };
 
   const handleCreate = () => {
     if (newExercise.category && newExercise.name) {
+      // Check if exercise with this name already exists in any category
+      const existingExercise = allExercises.some(category =>
+        category.exercises.some(exercise =>
+          exercise.toLowerCase() === newExercise.name.toLowerCase()
+        )
+      );
+
+      if (existingExercise) {
+        setError("Упражнение с таким названием уже существует");
+        return;
+      }
+
       createExercise(newExercise);
       handleClose();
     }
@@ -85,10 +99,14 @@ export const CreateExercise = ({ open, onOpenChange }: CreateExerciseProps) => {
               id="exercise-name"
               placeholder="Например: Жим лежа"
               value={newExercise.name}
-              onChange={(e) =>
-                setNewExercise({ ...newExercise, name: e.target.value })
-              }
+              onChange={(e) => {
+                setNewExercise({ ...newExercise, name: e.target.value });
+                if (error) setError("");
+              }}
             />
+            {error && (
+              <p className="text-sm text-red-500 mt-1">{error}</p>
+            )}
           </div>
         </div>
 

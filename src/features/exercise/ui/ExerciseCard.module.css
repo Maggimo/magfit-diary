@@ -6,43 +6,42 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		border: 1px solid;
+		border: 2px solid;
 		border-radius: 15px;
 		position: relative;
+		margin-top: 12px;
+		margin-bottom: 10px;
 }
 
 .presetName {
 		position: absolute;
-		top: -6px;
+		top: -14px;
 		background-color: white;
 		padding: 2px 6px;
 		font-size: 0.8em;
-		color: #666;
-		border-radius: 3px;
-		z-index: 10;
+		color: black;
+		border-radius: 10px;
+		border: 1px solid;
 }
 
 .cardHead {
-		box-sizing: border-box;
 		width: 100%;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		padding-right: 10px;
+		overflow: hidden;
 }
 
 .info {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		justify-content: space-between;
-		/*gap: 30px;*/
 		padding-left: 10px;
 }
 
 .exerciseName {
-		/*z-index: -5;*/
+		padding-left: 10px;
 		font-size: 1em;
 }
 

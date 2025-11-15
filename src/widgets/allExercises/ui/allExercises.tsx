@@ -28,13 +28,7 @@ export const AllExercises = () => {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className={
-                  "max-[330px]:text-xl max-[330px]:m-2 m-4 max-[330px]:p-2 max-[330px]:w-30 text-2xl justify-center w-3/4 p-8 border-2" +
-                  " border-black" +
-                  " rounded-xl bg-white" +
-                  " hover:bg-gray-50" +
-                  " text-black"
-                }
+                className="text-xl justify-center w-1/2 mb-8 p-6 border-1 border-black rounded-xl bg-white text-black"
               >
                 Создать
               </Button>

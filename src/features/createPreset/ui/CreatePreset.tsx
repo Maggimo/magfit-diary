@@ -30,8 +30,10 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
     exercises: [],
     presetColor: { r: 0, g: 0, b: 0, a: 1 },
   });
+  const [error, setError] = useState<string>("");
 
   const allExercises = useExerciseStore((state) => state.exercises);
+  const trainingPresets = useExerciseStore((state) => state.trainingPreset);
   const createTrainingPreset = useExerciseStore(
     (state) => state.createTrainingPreset,
   );
@@ -47,10 +49,23 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
       exercises: [],
       presetColor: { r: 0, g: 0, b: 0, a: 1 },
     });
+    setError("");
   };
 
   const handleCreate = () => {
     if (newPreset.presetName && newPreset.exercises.length > 0) {
+      // Check if preset with this name already exists
+      const existingPreset = trainingPresets.find(
+        (preset) =>
+          preset.presetName.toLowerCase() ===
+          newPreset.presetName.toLowerCase(),
+      );
+
+      if (existingPreset) {
+        setError("Пресет с таким названием уже существует");
+        return;
+      }
+
       createTrainingPreset(newPreset);
       handleClose();
     }
@@ -72,7 +87,7 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Добавить пресет тренировки</DialogTitle>
           <DialogDescription>
@@ -80,45 +95,49 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className={"flex justify-between gap-2 w-full items-end"}>
+        <div className="space-y-4 py-4 overflow-hidden">
+          <label htmlFor="preset-name" className="text-sm font-medium">
+            Название пресета
+          </label>
+          <div className={"flex justify-between gap-2 w-full items-center"}>
             <div className="space-y-2 w-[90%]">
-              <label htmlFor="preset-name" className="text-sm font-medium">
-                Название пресета
-              </label>
               <Input
                 id="preset-name"
                 placeholder="Например: Грудь и трицепс"
                 value={newPreset.presetName}
-                onChange={(e) =>
-                  setNewPreset({ ...newPreset, presetName: e.target.value })
-                }
+                onChange={(e) => {
+                  setNewPreset({ ...newPreset, presetName: e.target.value });
+                  if (error) setError("");
+                }}
               />
             </div>
-            <div className={"w-[10%]"}>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    style={{
-                      backgroundColor: `rgba(${newPreset.presetColor.r},${newPreset.presetColor.g},${newPreset.presetColor.b},${
-                        newPreset.presetColor.a === 1
-                          ? 0.8
-                          : newPreset.presetColor.a
-                      })`,
-                    }}
-                    variant="outline"
-                  >
-                    <Pipette />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full border-2 border-black rounded-md p-2">
-                  <RgbaColorPicker onChange={handleColorPicker} />
-                </PopoverContent>
-              </Popover>
-            </div>
+            <Popover>
+              <PopoverTrigger asChild className={"items-center justify-center"}>
+                <Button
+                  style={{
+                    backgroundColor: `rgba(${newPreset.presetColor.r},${newPreset.presetColor.g},${newPreset.presetColor.b},${
+                      newPreset.presetColor.a === 1
+                        ? 0.8
+                        : newPreset.presetColor.a
+                    })`,
+                  }}
+                  variant="outline"
+                >
+                  <Pipette />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full border-2 border-black rounded-md p-2">
+                <RgbaColorPicker onChange={handleColorPicker} />
+              </PopoverContent>
+            </Popover>
           </div>
+          {error && (
+            <p className="text-sm text-red-500 pt-0 pl-2 mt-[-15px] mb-0">
+              {error}
+            </p>
+          )}
 
-          <div className="space-y-2 max-[330px]:h-30 overflow-hidden">
+          <div className="space-y-2 max-[330px]:h-30">
             <label className="text-sm font-medium">Выберите упражнения</label>
             <div className="max-h-64 overflow-y-auto border rounded-md p-2">
               {allExercises.map((group) => (
@@ -139,7 +158,7 @@ export const CreatePreset = ({ open, onOpenChange }: CreatePresetProps) => {
                             handleExerciseToggle(exercise, e.target.checked)
                           }
                         />
-                        <span className="text-sm">{exercise}</span>
+                        <span className="text-sm truncate">{exercise}</span>
                       </label>
                     ))}
                   </div>

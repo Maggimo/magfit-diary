@@ -48,7 +48,7 @@ export const WeekSlider = () => {
         dragTransition={{ bounceStiffness: 800, bounceDamping: 25 }}
         dragElastic={0.15}
         whileDrag={{ scale: 1.05 }}
-        className={"bg-white z-20 mb-4"}
+        className={"bg-white z-20"}
       >
         <div
           className={`${styles.calendar} relative overflow-hidden transition-all duration-1000 ${

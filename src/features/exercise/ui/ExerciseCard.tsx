@@ -5,6 +5,7 @@ import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import { useCalendarStore } from "@/entities/calendarDay";
 import { type Exercise, useExerciseStore } from "@/entities/exercise";
 import * as motion from "motion/react-client";
+import { cn } from "../../../shared/lib";
 import { ExerciseBody } from "./ExerciseBody";
 import { ExerciseNameSelector } from "./ExerciseNameSelector";
 import style from "./ExerciseCard.module.css";
@@ -15,7 +16,7 @@ interface ExerciseCardProps {
 
 export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
   const [isEditable, setIsEditable] = useState(false);
-  const [popupVisibility, setPopupVisibility] = useState(false);
+  const [modalVisibility, setModalVisibility] = useState(false);
   const [showHint, setShowHint] = useState(false);
 
   const setExerciseName = useCalendarStore((store) => store.setExerciseName);
@@ -46,7 +47,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
     )?.category;
     if (category) {
       setExerciseName({ name, group: category }, exercise);
-      setPopupVisibility(false);
+      setModalVisibility(false);
     }
   };
 
@@ -68,7 +69,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
         <div style={{ borderColor: exerciseColor }} className={style.card}>
           <div
             onClick={() => setIsEditable((p) => !p)}
-            className={style.cardHead}
+            className={cn(style.cardHead, "overflow-hidden ")}
           >
             <div className={style.info}>
               <div className={style.icon}>
@@ -88,7 +89,7 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
               >
                 {exercise.presetName && (
                   <div
-                    style={{ color: exerciseColor }}
+                    style={{ borderColor: exerciseColor }}
                     className={style.presetName}
                   >
                     Пресет: {exercise.presetName}
@@ -98,13 +99,15 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
                   allExercises={allExercises}
                   exerciseName={exercise.name}
                   isEditable={isEditable}
-                  open={popupVisibility}
-                  onOpenChange={setPopupVisibility}
+                  open={modalVisibility}
+                  onOpenChange={setModalVisibility}
                   onSelect={inputChangeHandler}
                 />
               </div>
             </div>
-            <div>{isEditable ? <ChevronUp /> : <ChevronDown />}</div>
+            <div className={"p-4"}>
+              {isEditable ? <ChevronUp /> : <ChevronDown />}
+            </div>
           </div>
           <AnimatePresence>
             {isEditable && (

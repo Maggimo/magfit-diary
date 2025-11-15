@@ -20,26 +20,24 @@ export const ProfileDropDownMenu = () => {
       </PopoverTrigger>
       <PopoverContent className="w-full relative right-5">
         <div className="grid gap-2">
-          <div className="flex flex-row items-center gap-4">
+          <div
+            onClick={() => {
+              navigate("/timer");
+            }}
+            className="flex flex-row items-center gap-4"
+          >
             <TimerIcon />
-            <div
-              onClick={() => {
-                navigate("/timer");
-              }}
-            >
-              Таймер
-            </div>
+            <div>Таймер</div>
           </div>
           <Separator />
-          <div className="flex flex-row items-center gap-4">
+          <div
+            onClick={() => {
+              navigate("/exercises/");
+            }}
+            className="flex flex-row items-center gap-4"
+          >
             <ScrollText />
-            <div
-              onClick={() => {
-                navigate("/exercises/");
-              }}
-            >
-              Список упражнений
-            </div>
+            <div>Список упражнений</div>
           </div>
         </div>
       </PopoverContent>
